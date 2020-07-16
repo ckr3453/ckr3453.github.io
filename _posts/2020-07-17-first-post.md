@@ -3,6 +3,7 @@ title: "github.io 구축하기 첫글"
 categories: 
   - category_test!
 author_profile: true
+date: 2020-07-17 01:14:21 -0400
 last_modified_at: 2020-07-17 01:42:00 -0400
 tags:
     - 태그1
