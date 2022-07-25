@@ -12,21 +12,22 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "dark" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "dark"  # 전체적인 블로그의 색감을 정하는 값입니다.
+                          # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise" 
 
 # Site Settings
-locale                   : "ko-KR"
-title                    : "기록하는 습관 들이기 :)"
+locale                   : "ko-KR"  # 블로그의 주요 언어입니다. 한국어로 보려고 ko-KR로 설정했습니다.
+title                    : "기록하는 습관 들이기 :)"  # 사이트 탭에서 보이는 이름입니다.
 title_separator          : "-"
-subtitle                 : # site tagline that appears below site title in masthead
-name                     : "CKR"
-description              : "CKR의 기록 저장소"
-url                      : "https://ckr3453.github.io"
-baseurl                  : ""
-repository               : "ckr3453/ckr3453.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
-masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
+subtitle                 :  # 화면 title 하단에 있는 소제목입니다. # site tagline that appears below site title in masthead
+name                     : "CKR"  # 화면 하단 영역의 이름입니다.
+description              : "CKR의 기록 저장소"  # 설명란입니다.
+url                      : "https://ckr3453.github.io"  # 현재의 블로그 url 입니다.
+baseurl                  : "" # (예기치 못한 오류)일 때 연결되는 url입니다.
+repository               : "ckr3453/ckr3453.github.io"  # Github Repo url입니다. # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+teaser                   : # 폴백일 때 보일 이미지입니다. "assets/images/"로 연결됩니다. # path of fallback teaser image, e.g. "/assets/images/500x300.png"
+logo                     : "/assets/images/logo.jpg" # 화면에 보여지는 logo 이미지입니다. "assets/images"로 세팅합니다. # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+masthead_title           : # 화면 title 입니다. # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:
@@ -93,52 +94,52 @@ analytics:
 
 # Site Author
 author:
-  name             : "CKR"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "블로그 사용법 익히는 중입니다.."
+  name             : "CKR"  # 이름 영역입니다.
+  avatar           : "/assets/images/profile.jpg" # 프로필 사진 경로입니다. # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  bio              : "블로그 사용법 익히는 중입니다.." # 프로필 사진 밑에 자기소개 영역. 줄바꿈은 <br>로 굵은 글씨는 **글씨** 로 표기해주세요. 
   location         : "Gyeonggi-do, Suwon"
   email            : "david3453@naver.com"
   links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      # url: "mailto:your.name@email.com"
+    # - label: "Email"
+    #   icon: "fas fa-fw fa-envelope-square"
+    #   url: "mailto:david3453@naver.com"
     # - label: "Website"
     #   icon: "fas fa-fw fa-link"
     #   # url: "https://your-website.com"
     # - label: "Twitter"
     #   icon: "fab fa-fw fa-twitter-square"
     #   # url: "https://twitter.com/"
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
-      url: "https://www.facebook.com/people/조경록/100005615231408"
+    # - label: "Facebook"
+    #   icon: "fab fa-fw fa-facebook-square"
+    #   url: "https://www.facebook.com/people/조경록/100005615231408"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/ckr3453"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/xx_ckr/"
+    # - label: "Instagram"
+    #   icon: "fab fa-fw fa-instagram"
+    #   url: "https://instagram.com/xx_ckr/"
 
 # Site Footer
-footer:
-  links:
+# footer:
+#   links:
     # - label: "Twitter"
     #   icon: "fab fa-fw fa-twitter-square"
     #   # url:
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
-      url: "https://www.facebook.com/people/조경록/100005615231408"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/ckr3453"
+    # - label: "Facebook"
+    #   icon: "fab fa-fw fa-facebook-square"
+    #   url: "https://www.facebook.com/people/조경록/100005615231408"
+    # - label: "GitHub"
+    #   icon: "fab fa-fw fa-github"
+    #   url: "https://github.com/ckr3453"
     # - label: "GitLab"
     #   icon: "fab fa-fw fa-gitlab"
     #   # url:
     # - label: "Bitbucket"
     #   icon: "fab fa-fw fa-bitbucket"
     #   # url:
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/xx_ckr/"
+    # - label: "Instagram"
+    #   icon: "fab fa-fw fa-instagram"
+    #   url: "https://instagram.com/xx_ckr/"
 
 
 # Reading Files
@@ -207,7 +208,7 @@ sass:
 
 # Outputting
 permalink: /:categories/:title/
-paginate: 5 # amount of posts to show
+paginate: 15 # amount of posts to show
 paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
@@ -280,3 +281,10 @@ defaults:
       share: true
       related: true
 
+  # _pages
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      author_profile: true
