@@ -15,3 +15,5 @@ group :jekyll_plugins do
   gem "jekyll-algolia"
   gem "jekyll-include-cache"
 end
+
+gem 'eventmachine', '1.2.7', git: 'https://github.com/eventmachine/eventmachine', tag: 'v1.2.7'
