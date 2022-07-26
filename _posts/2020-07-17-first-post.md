@@ -1,15 +1,13 @@
 ---
-# layout: posts
 title: "github.io 구축하기 첫글"
 categories: 
     - category_test
-# author_profile: true
 date: 2020-07-17 01:14:21 -0400
-# last_modified_at: 
-tags:
-    - 태그1
-    - 태그2
-    - tag_test..
+last_modified_at: 2022-07-27 01:14:21 -0400
+# tags:
+#     - 태그1
+#     - 태그2
+#     - tag_test..
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"

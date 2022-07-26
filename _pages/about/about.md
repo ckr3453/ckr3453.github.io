@@ -6,6 +6,6 @@ toc_sticky: true
 # toc_label: "MYSELF"
 ---
 
-<h2> 깃헙 블로그 자기소개 </h2>
+깃헙 블로그 자기소개
 
 테스트.
