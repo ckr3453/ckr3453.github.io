@@ -1,9 +1,9 @@
 ---
-title: "category_test"
-permalink: /categories/category_test
+title: "categorytest"
+permalink: /categories/categorytest
 layout: archive
 sidebar_category: true
 ---
 
-{% assign posts = site.categories.category_test %}
+{% assign posts = site.categories.categorytest %}
 {% for post in posts %} {% include archive-single2.html type=page.entries_layout %} {% endfor %}
