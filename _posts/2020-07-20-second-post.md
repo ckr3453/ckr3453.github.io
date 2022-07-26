@@ -1,17 +1,18 @@
 ---
-layout: posts
-title: github pages 커스텀하는중(jekyll theme)
-date: 2020-07-20 00:12:00 -0400
-categories: category_test
+# layout: posts
+title: "github.io 구축하기 두번째"
+categories: 
+    - category_test
+# author_profile: true
+date: 2020-07-17 01:14:21 -0400
+# last_modified_at: 
 tags:
     - 태그1
-    - 테스트용2
+    - 태그2
+    - tag_test..
+toc: true
+toc_sticky: true
+# toc_label: "MYSELF"
 ---
 
 루비 처음써봄
-
-신기하네;
-
-블로그 만든다고 정작 글도 못올리네 하..
-
-배보다 배꼽이더커지는중
