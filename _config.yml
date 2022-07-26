@@ -26,7 +26,7 @@ url                      : "https://ckr3453.github.io"  # 현재의 블로그 ur
 baseurl                  : "" # (예기치 못한 오류)일 때 연결되는 url입니다.
 repository               : "ckr3453/ckr3453.github.io"  # Github Repo url입니다. # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # 폴백일 때 보일 이미지입니다. "assets/images/"로 연결됩니다. # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo                     : "/assets/images/logo.jpg" # 화면에 보여지는 logo 이미지입니다. "assets/images"로 세팅합니다. # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+logo                     : "" # 화면에 보여지는 logo 이미지입니다. "assets/images"로 세팅합니다. # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # 화면 title 입니다. # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
