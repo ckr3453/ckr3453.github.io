@@ -28,10 +28,10 @@ repository               : "ckr3453/ckr3453.github.io"  # Github Repo url입니�
 teaser                   : # 폴백일 때 보일 이미지입니다. "assets/images/"로 연결됩니다. # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : "" # 화면에 보여지는 logo 이미지입니다. "assets/images"로 세팅합니다. # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # 화면 title 입니다. # overrides the website title displayed in the masthead, use " " for no title
-# breadcrumbs            : false # true, false (default)
+breadcrumbs              : true # true, false (default)
 words_per_minute         : 200
 comments:
-  provider               : # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
+  provider               : "utterances" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
   disqus:
     shortname            : # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
   discourse:
@@ -42,8 +42,8 @@ comments:
     num_posts            : # 5 (default)
     colorscheme          : # "light" (default), "dark"
   utterances:
-    theme                : # "github-light" (default), "github-dark"
-    issue_term           : # "pathname" (default)
+    theme                : "photon-dark" # "github-light" (default), "github-dark"
+    issue_term           : "pathname" # "pathname" (default)
   staticman:
     branch               : # "master"
     endpoint             : # "https://{your Staticman v3 API}/v3/entry/github/"
@@ -280,6 +280,7 @@ defaults:
       comments: true # true
       share: true
       related: true
+      sidebar_category: true
 
   # _pages
   - scope:
