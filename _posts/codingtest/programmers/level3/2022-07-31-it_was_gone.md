@@ -1,5 +1,5 @@
 ---
-title: "[Level 3] 있었는데요 없었습니다. (MySQL)"
+title: "[Level 3] 있었는데요 없었습니다 (MySQL)"
 categories: 
     - programmers
 date: 2022-07-31
