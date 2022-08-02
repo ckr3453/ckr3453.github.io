@@ -29,6 +29,7 @@ teaser                   : # 폴백일 때 보일 이미지입니다. "assets/im
 logo                     : "" # 화면에 보여지는 logo 이미지입니다. "assets/images"로 세팅합니다. # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # 화면 title 입니다. # overrides the website title displayed in the masthead, use " " for no title
 breadcrumbs              : true # true, false (default)
+future                   : true # 시스템 시간보다 더 뒤의 일자로 포스팅 발행일을 선택했을 때 포스팅이 올라가도록 허용
 words_per_minute         : 200
 comments:
   provider               : "utterances" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
@@ -290,3 +291,4 @@ defaults:
     values:
       layout: single
       author_profile: true
+
