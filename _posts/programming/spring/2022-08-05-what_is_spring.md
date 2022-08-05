@@ -12,6 +12,7 @@ toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
 ---
+![image](https://user-images.githubusercontent.com/36228833/183103452-22744a6f-90cb-4064-8bef-56067c60bef0.png)
 
 #### **생태계**
 스프링은 하나가 아닌 여러 도구(기술)들의 모음이다.
@@ -29,6 +30,7 @@ toc_sticky: true
 - 언어: Java, Kotlin, Groovy
 
 #### **왜 만들었는가?**
+![image](https://user-images.githubusercontent.com/36228833/183103815-29afe8e6-cc9c-4372-8002-bceb09f1e156.png)
 - 2002년 Rod Johnson이 EJB (Enterprise JavaBeans) 라는 기존 자바 표준기술의 불편함 및 문제점을 지적하며 책을 출간한다.
   - EJB는 기업환경의 시스템을 구현하기 위한 서버측 컴포넌트 모델이다. 
   - 스프링 이전엔 EJB가 자바 기반 기업용 애플리케이션의 표준이었다.
