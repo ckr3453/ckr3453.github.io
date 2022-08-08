@@ -1,9 +1,9 @@
 ---
-title: "[스프링 핵심 원리 - 기본] 스프링이란"
+title: "스프링이란"
 categories: 
     - Spring
 date: 2022-08-05
-last_modified_at: 2022-08-05
+last_modified_at: 2022-08-08
 # tags:
 #     - 태그1
 #     - 태그2
@@ -14,14 +14,14 @@ toc_sticky: true
 ---
 ![image](https://user-images.githubusercontent.com/36228833/183103452-22744a6f-90cb-4064-8bef-56067c60bef0.png)
 
-#### **생태계**
+## 📌 생태계
 스프링은 하나가 아닌 여러 도구(기술)들의 모음이다.
 
 - 필수 : **스프링 프레임워크**, 스프링 부트 (스프링 프레임워크를 좀더 편리하게 사용하도록 지원. ex) 설정 자동화, 웹서버 embedded, starter kit 제공 등)
 - 선택 : 스프링 데이터, 스프링 세션, 스프링 시큐리티, 스프링 Rest Docs, 스프링 배치 등 스프링을 사용함에 있어서 특화된 기능을 제공하는 프레임워크가 다수 존재한다.
 
 
-#### **관련 기술들**
+## 🔎 관련 기술들
 - 핵심 기술: 스프링 DI 컨테이너, AOP, 이벤트, PSA 등
 - 웹 기술: 스프링 MVC, 스프링 WebFlux
 - 데이터 접근기술: 트랜잭션, JDBC, ORM 지원, XML 지원
@@ -29,7 +29,7 @@ toc_sticky: true
 - 테스트: 스프링 기반 테스트 지원
 - 언어: Java, Kotlin, Groovy
 
-#### **왜 만들었는가?**
+## ❓ 왜 만들었는가?
 ![image](https://user-images.githubusercontent.com/36228833/183103815-29afe8e6-cc9c-4372-8002-bceb09f1e156.png)
 - 2002년 Rod Johnson이 EJB (Enterprise JavaBeans) 라는 기존 자바 표준기술의 불편함 및 문제점을 지적하며 책을 출간한다.
   - EJB는 기업환경의 시스템을 구현하기 위한 서버측 컴포넌트 모델이다. 
@@ -43,7 +43,7 @@ toc_sticky: true
 - 이를 본 Juergen Hoeller와 Yann Caroff가 Rod Johnson에 스프링 오픈소스 프로젝트를 제안하게된다.
   - 스프링의 의미는 자바 생태계의 긴 겨울(EJB)을 끝내고 봄을 맞이하자는 뜻이다.
 
-#### **핵심 개념 및 컨셉**
+## ✨ 핵심 개념 및 컨셉
 - 스프링은 자바 언어 기반의 프레임워크다.
 - 자바 언어의 가장 큰 특징 - 객체지향 언어가 가진 강력한 특징을 살려내는 프레임워크
   - 과거 EJB에 상속된 지저분한 개발 -> 객체지향이 가진 좋은 장점들을 상실하고 EJB 스타일에 상속되어 개발
@@ -52,5 +52,7 @@ toc_sticky: true
 
 - 좋은 객체 지향 애플리케이션을 개발할 수 있게 도와주는 프레임워크
 
-#### **Reference**
+## 📣 Reference
+본 포스팅은 김영한님의 강의를 듣고 스스로 정리한 내용입니다.
+
 [스프링 핵심 원리 - 기본편 / 김영한](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC-%EA%B8%B0%EB%B3%B8%ED%8E%B8)
