@@ -26,7 +26,31 @@ toc_sticky: true
 ## 싱글톤 패턴 (Singleton pattern)
 - 클래스의 인스턴스가 딱 1개만 생성되는 것을 보장하는 디자인 패턴이다.
 - 스프링 빈 객체에 싱글톤 패턴을 적용함으로써 이미 만들어진 빈 객체를 공유해서 효율적으로 사용할 수 있다.
-- 하지만 싱글톤 패턴은 다음과 같은 문제점을 가지고 있다.
+
+### 구현
+```java
+public class SingletonService {
+
+    // static 영역에 객체를 1개만 생성한다.
+    private static final SingletonService instance = new SingletonService(); // 자기자신을 static에 올림
+
+    // 객체 인스턴스가 필요하면 해당 메서드를 통해서만 조회하도록 허용한다.
+    public static SingletonService getInstance(){
+        return instance;
+    }
+
+    // 생성자를 private로 선언하여 외부에서 new 키워드를 사용한 객체 생성을 제한한다. (자기 자신만 생성자 호출 가능)
+    private SingletonService(){
+    }
+
+    public void logic(){
+        System.out.println("싱글톤 객체 로직 호출");
+    }
+
+}
+```
+
+하지만 싱글톤 패턴은 다음과 같은 문제점을 가지고 있다.
 
 ### 문제점
 - 싱글톤 패턴을 구현하는 코드 자체가 많이 들어간다.
