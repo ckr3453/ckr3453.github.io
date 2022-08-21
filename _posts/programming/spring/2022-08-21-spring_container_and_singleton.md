@@ -184,7 +184,7 @@ void configurationDeep() {
 순수한 클래스라면 다음과 같이 출력되어야 한다.
 - `bean = class com.inflearn.demo.AppConfig`
 
-그런데 예상과는 다르게 클래스 명에 $$xxxCGLIB$$가 붙으면서 상당히 복잡해진 것을 볼 수 있다. 이것은 내가 만든 클래스가 아니라 스프링이 `CGLIB`라는 바이트코드 조작 라이브러리를 사용해서 `AppConfig` 클래스를 상속받은 임의의 다른 클래스를 만들고, 그 다른 클래스를 스프링 빈으로 등록한 것이다!
+그런데 예상과는 다르게 클래스 명에 **EnhancerBySpringCGLIB**가 붙으면서 상당히 복잡해진 것을 볼 수 있다. 이것은 내가 만든 클래스가 아니라 스프링이 `CGLIB`라는 바이트코드 조작 라이브러리를 사용해서 `AppConfig` 클래스를 상속받은 임의의 다른 클래스를 만들고, 그 다른 클래스를 스프링 빈으로 등록한 것이다!
 
 ![image](https://user-images.githubusercontent.com/36228833/185789833-dc8ba605-8996-4423-950b-23d668641ddc.png)
 
