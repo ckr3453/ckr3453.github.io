@@ -25,8 +25,8 @@
             </ul>
             <ul>
                 {% for category in site.categories %}
-                    {% if category[0] == "category_test2" %}
-                        <li><a href="/categories/category_test2" class="">카테고리 테스트2 ({{category[1].size}})</a></li>
+                    {% if category[0] == "baekjoon" %}
+                        <li><a href="/categories/baekjoon" class="">백준 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
