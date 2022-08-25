@@ -2,8 +2,8 @@
 title: "12891번 DNA 비밀번호 (Java)"
 categories: 
     - baekjoon
-date: 2022-08-23
-last_modified_at: 2022-08-23
+date: 2022-08-25
+last_modified_at: 2022-08-25
 # tags:
 #     - 태그1
 #     - 태그2
