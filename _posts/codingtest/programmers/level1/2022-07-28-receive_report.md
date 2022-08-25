@@ -121,9 +121,11 @@ class Solution {
                   reporterInfoMap.get(reporter).add(reported);    
               }
           } else {
+            {% raw %}
               reporterInfoMap.put(reporter, new HashSet<String>(){{
                   add(reported);
               }});
+            {% endraw %}
           }
             
           if (flag) {
@@ -173,9 +175,11 @@ class Solution {
         for(String reportInfo : reportSet){
             String reporter = reportInfo.split(" ")[0];  // 신고 한 사람
             String reported = reportInfo.split(" ")[1];  // 신고 당한 사람
+            {% raw %}
             reporterInfoMap.putIfAbsent(reporter, new HashSet<String>(){{
                 add(reported);
             }});
+            {% endraw %}
             reporterInfoMap.get(reporter).add(reported);
             reportedCountInfoMap.put(reported, reportedCountInfoMap.getOrDefault(reported, 0)+1);
         }
