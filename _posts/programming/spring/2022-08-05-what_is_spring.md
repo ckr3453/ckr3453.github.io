@@ -1,7 +1,7 @@
 ---
 title: "스프링이란"
 categories: 
-    - Spring
+    - spring
 date: 2022-08-05
 last_modified_at: 2022-08-08
 # tags:

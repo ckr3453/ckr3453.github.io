@@ -1,7 +1,7 @@
 ---
 title: "스프링, 객체지향 프로그래밍의 핵심 - 다형성"
 categories: 
-    - Spring
+    - spring
 date: 2022-08-06
 last_modified_at: 2022-08-08
 # tags:

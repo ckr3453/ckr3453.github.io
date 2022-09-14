@@ -1,7 +1,7 @@
 ---
 title: "스프링 컨테이너의 싱글톤 패턴 활용"
 categories: 
-    - Spring
+    - spring
 date: 2022-08-21
 last_modified_at: 2022-08-21
 # tags:
