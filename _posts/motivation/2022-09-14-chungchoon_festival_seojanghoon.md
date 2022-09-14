@@ -13,4 +13,4 @@ last_modified_at: 2022-09-14
 # toc_label: "MYSELF"
 excerpt: "서장훈이 말하는 열정과 냉정사이"
 ---
-{% youtube "https://www.youtube.com/watch?v=xhpWBvnwmI" %}
+<iframe width="1280" height="720" src="https://www.youtube.com/embed/-xhpWBvnwmI" title="즐겨. 펑펑 울고 1년 더 하면 되지. 그것도 즐겨? - LEGEND WEEK 서장훈 동기부여 영상" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
