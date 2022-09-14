@@ -1,7 +1,7 @@
 ---
 title: "JVM은 무엇이며 자바 코드는 어떻게 실행하는 것인가"
 categories: 
-    - Java
+    - java
 date: 2021-02-03
 last_modified_at: 2022-07-28
 # tags:

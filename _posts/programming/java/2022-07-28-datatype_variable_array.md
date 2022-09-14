@@ -1,7 +1,7 @@
 ---
 title: "자바 데이터 타입, 변수 그리고 배열"
 categories: 
-    - Java
+    - java
 date: 2021-04-10
 last_modified_at: 2022-07-28
 # tags:

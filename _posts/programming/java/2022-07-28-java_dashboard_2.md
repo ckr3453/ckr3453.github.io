@@ -1,7 +1,7 @@
 ---
 title: "JMX를 활용한 자바 애플리케이션 대시보드 구축 1단계(jmx-exporter + Prometheus + Grafana)"
 categories: 
-    - Java
+    - java
 date: 2022-07-02
 last_modified_at: 2022-07-30
 # tags:
