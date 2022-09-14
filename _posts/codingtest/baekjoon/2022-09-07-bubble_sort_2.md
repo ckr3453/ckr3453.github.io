@@ -11,6 +11,7 @@ last_modified_at: 2022-09-07
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "1517번 버블 소트2 (Java)"
 ---
 ## 문제 설명
 

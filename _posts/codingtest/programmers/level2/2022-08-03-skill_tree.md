@@ -11,6 +11,7 @@ last_modified_at: 2022-08-03
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "[Level 2] 스킬트리 (Java)"
 ---
 #### **문제 설명**
 

@@ -11,6 +11,7 @@ last_modified_at: 2022-08-16
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "[Level 2] 위장 (Java)"
 ---
 ## **문제 설명**
 스파이들은 매일 다른 옷을 조합하여 입어 자신을 위장합니다.

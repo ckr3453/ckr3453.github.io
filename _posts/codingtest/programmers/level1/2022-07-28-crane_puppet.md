@@ -11,6 +11,7 @@ last_modified_at: 2022-07-28
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "[Level 1] 크레인 인형뽑기 게임 (Python)"
 ---
 #### **문제 설명**
 게임개발자인 죠르디는 크레인 인형뽑기 기계를 모바일 게임으로 만들려고 합니다.

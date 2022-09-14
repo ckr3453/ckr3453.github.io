@@ -11,6 +11,7 @@ last_modified_at: 2022-08-17
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "[Level 3] 베스트앨범 (Java)"
 ---
 ## **문제 설명**
 스트리밍 사이트에서 장르 별로 가장 많이 재생된 노래를 두 개씩 모아 베스트 앨범을 출시하려 합니다. 노래는 고유 번호로 구분하며, 노래를 수록하는 기준은 다음과 같습니다.

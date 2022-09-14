@@ -11,6 +11,7 @@ last_modified_at: 2022-09-03
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "2751번 수 정렬하기 2 (Java)"
 ---
 ## 문제 설명
 

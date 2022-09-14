@@ -11,6 +11,7 @@ last_modified_at: 2022-08-25
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "1253번 좋다 (Java)"
 ---
 ## 문제 설명
 

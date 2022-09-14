@@ -11,6 +11,7 @@ last_modified_at: 2022-07-30
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "JMX를 활용한 자바 애플리케이션 대시보드 구축에 대해 알아보자"
 ---
 #### 개요
 `metric` 데이터를 수집하기 위해 `Tomcat`과 `jmx-exporter`를 활용하여 `metric`를 추출하는 작업을 진행한다.

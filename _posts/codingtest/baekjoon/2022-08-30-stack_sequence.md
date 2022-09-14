@@ -11,6 +11,7 @@ last_modified_at: 2022-08-30
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "1874번 스택 수열 (Java)"
 ---
 ## 문제 설명
 

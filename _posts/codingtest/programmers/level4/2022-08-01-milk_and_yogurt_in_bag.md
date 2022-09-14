@@ -11,6 +11,7 @@ last_modified_at: 2022-08-01
 toc: true
 toc_sticky: true
 # toc_label: "목차"
+excerpt: "[Level 4] 우유와 요거트가 담긴 장바구니 (MySQL)"
 ---
 #### **문제설명**
 CART_PRODUCTS 테이블은 장바구니에 담긴 상품 정보를 담은 테이블입니다. CART_PRODUCTS 테이블의 구조는 다음과 같으며, ID, CART_ID, NAME, PRICE는 각각 테이블의 아이디, 장바구니의 아이디, 상품 종류, 가격을 나타냅니다.

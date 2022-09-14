@@ -11,6 +11,7 @@ last_modified_at: 2022-07-28
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "[Level 1] 완주하지 못한 선수 (Python)"
 ---
 #### **문제 설명**
 수많은 마라톤 선수들이 마라톤에 참여하였습니다. 단 한 명의 선수를 제외하고는 모든 선수가 마라톤을 완주하였습니다.

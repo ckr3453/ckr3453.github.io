@@ -11,6 +11,7 @@ last_modified_at: 2022-07-28
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "[Level 2] 행렬 테두리 회전하기 (Java)"
 ---
 #### **문제설명**
 rows x columns 크기인 행렬이 있습니다. 행렬에는 1부터 rows x columns까지의 숫자가 한 줄씩 순서대로 적혀있습니다. 이 행렬에서 직사각형 모양의 범위를 여러 번 선택해, 테두리 부분에 있는 숫자들을 시계방향으로 회전시키려 합니다. 각 회전은 (x1, y1, x2, y2)인 정수 4개로 표현하며, 그 의미는 다음과 같습니다.

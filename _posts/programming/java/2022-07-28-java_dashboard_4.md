@@ -11,6 +11,7 @@ last_modified_at: 2022-07-30
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "JMX를 활용한 자바 애플리케이션 대시보드 구축에 대해 알아보자"
 ---
 #### 개요
 `Prometheus`가 수집한 `metric` 데이터를 `Grafana` 를 이용하여 시각화 한 뒤 대시보드를 구성해본다.

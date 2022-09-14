@@ -11,6 +11,7 @@ last_modified_at: 2022-08-26
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "11003번 최솟값 찾기 (Java)"
 ---
 ## 문제 설명
 

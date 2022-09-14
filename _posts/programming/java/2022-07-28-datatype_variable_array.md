@@ -11,6 +11,7 @@ last_modified_at: 2022-07-28
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "자바의 데이터 타입 및 변수, 배열에 대해 알아보자"
 ---
 - #### **Primitive Type(원시 타입)과 Reference Type(참조 타입)**
   - **Primitive Type(원시 타입)**<br/>

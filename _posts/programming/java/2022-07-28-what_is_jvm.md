@@ -11,6 +11,7 @@ last_modified_at: 2022-07-28
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "JVM의 동작 방식 및 구성을 알아보자"
 ---
 - #### **JVM이란 무엇인가**
 **자바 가상 머신(Java Virtual Machine, JVM)은** 시스템 메모리를 관리하면서 자바 기반 애플리케이션을 위해 이식 가능한 실행 환경을 제공합니다. 즉, 자바 언어로 작성된 프로그램을 실행시키기 위한 소프트웨어입니다.

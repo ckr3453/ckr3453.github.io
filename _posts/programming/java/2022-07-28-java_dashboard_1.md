@@ -11,6 +11,7 @@ last_modified_at: 2022-07-30
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "JMX를 활용한 자바 애플리케이션 대시보드 구축에 대해 알아보자"
 ---
 #### 계기
 

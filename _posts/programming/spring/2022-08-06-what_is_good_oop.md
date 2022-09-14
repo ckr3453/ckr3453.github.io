@@ -11,6 +11,7 @@ last_modified_at: 2022-08-08
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "스프링과 객체지향 프로그래밍의 관계에 대해 알아보자"
 ---
 
 ## 💻 객체 지향 프로그래밍이란

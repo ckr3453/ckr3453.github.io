@@ -11,6 +11,7 @@ last_modified_at: 2022-08-21
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "스프링 컨테이너와 빈에 대하여 알아보자"
 ---
 
 ## 스프링 컨테이너란? (Spring Container)

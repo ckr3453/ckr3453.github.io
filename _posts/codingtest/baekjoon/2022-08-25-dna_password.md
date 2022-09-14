@@ -11,6 +11,7 @@ last_modified_at: 2022-08-25
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
+excerpt: "12891번 DNA 비밀번호 (Java)"
 ---
 ## 문제 설명
 
