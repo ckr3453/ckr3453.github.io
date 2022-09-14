@@ -14,6 +14,7 @@ group :jekyll_plugins do
   gem "jemoji"
   gem "jekyll-algolia"
   gem "jekyll-include-cache"
+  gem "jekyll-youtube"
 end
 
 gem 'eventmachine', '1.2.7', git: 'https://github.com/eventmachine/eventmachine', tag: 'v1.2.7'
