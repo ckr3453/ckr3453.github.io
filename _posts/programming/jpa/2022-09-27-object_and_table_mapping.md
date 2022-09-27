@@ -2,8 +2,8 @@
 title: "객체와 테이블 매핑 (작성중)"
 categories: 
     - jpa
-date: 2022-09-20
-last_modified_at: 2022-09-20
+date: 2022-09-27
+last_modified_at: 2022-09-27
 # tags:
 #     - 태그1
 #     - 태그2
