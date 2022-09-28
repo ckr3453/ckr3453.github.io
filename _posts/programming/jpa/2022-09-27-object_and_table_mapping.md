@@ -1,9 +1,9 @@
 ---
-title: "객체와 테이블 매핑 (작성중)"
+title: "객체와 테이블 매핑"
 categories: 
     - jpa
 date: 2022-09-27
-last_modified_at: 2022-09-27
+last_modified_at: 2022-09-28
 # tags:
 #     - 태그1
 #     - 태그2
@@ -13,13 +13,6 @@ toc_sticky: true
 # toc_label: "MYSELF"
 excerpt: "JPA에서 객체와 데이터베이스가 어떻게 매핑이 되는지 알아보자."
 ---
-
-- 객체와 테이블 매핑 : @Entity, @Table
-- 필드와 컬럼 매핑 : @Column
-- 기본 키 매핑 : @Id
-- 연관관계 매핑 : @ManyToOne, @JoinColumn
-  - 1:N, 1:1, N:N 등 데이터베이스에서 연관관계
-
 ## @Entity
 - `@Entity`가 붙은 클래스는 JPA가 관리하며, `Entity`라고 한다.
 - JPA를 사용해서 테이블과 매핑할 클래스는 `@Entity` 애노테이션이 필수다.
@@ -32,7 +25,7 @@ excerpt: "JPA에서 객체와 데이터베이스가 어떻게 매핑이 되는�
 
   |속성|기능|기본값|사용예|
   |---|---|---|---|
-  |name|매핑할 `Entity` 이름|클래스 이름을 사용|`@Entity(name = "Member")`|
+  |`name`|매핑할 `Entity` 이름|클래스 이름을 사용|`@Entity(name = "Member")`|
 
 ## @Table
 - `@Table`은 `Entity`와 실제로 매핑할 테이블 이름을 지정
@@ -40,12 +33,12 @@ excerpt: "JPA에서 객체와 데이터베이스가 어떻게 매핑이 되는�
 
   |속성|기능|기본값|사용예|
   |---|---|---|---|
-  |name|매핑할 테이블 이름|엔티티 이름을 사용|`@Table(name="EntityName")`|
-  |catalog|데이터베이스 catalog 매핑||`@Table(catalog="YOUR_CATALOG")`|
-  |schema|데이터베이스 schema 매핑||`@Table(schema="YOUR_SCHEMA")`|
-  |uniqueConstraints(DDL)|DDL 생성 시에 유니크 제약조건을 생성||`@Table(uniqueConstraints="")`|
+  |`name`|매핑할 테이블 이름|엔티티 이름을 사용|`@Table(name="EntityName")`|
+  |`catalog`|데이터베이스 catalog 매핑||`@Table(catalog="YOUR_CATALOG")`|
+  |`schema`|데이터베이스 schema 매핑||`@Table(schema="YOUR_SCHEMA")`|
+  |`uniqueConstraints`|DDL 생성 시에 유니크 제약조건을 생성||`@Table(uniqueConstraints={@UniqueConstraint(name = "NAME_AGE_UNIQUE", columnNames = {"NAME", "AGE"})}`|
 
-### 데이터베이스 스키마 자동 생성 기능
+## 데이터베이스 스키마 자동 생성 기능
 - JPA는 `Entity` 대상이 되는 클래스를 참조하여 애플리케이션 실행 시점에 DDL을 자동 생성한다.
   - 설정된 데이터베이스의 방언을 활용하여 그에 맞는 적절한 DDL을 생성한다.
 
@@ -78,8 +71,17 @@ excerpt: "JPA에서 객체와 데이터베이스가 어떻게 매핑이 되는�
       - 스테이징과 운영 서버는 `validate` 또는 `none` 를 권장한다.
       - **정리**
         - 혼자 사용하는 로컬 환경에서는 사용해도 괜찮으나, **다른 사람과 같이 사용하는 환경에서는 가급적 사용하지 않는 것을 권장**한다.
-      
 
+## DDL 생성 기능
+- `@Column`
+  - DDL 생성 시 컬럼 별 제약조건을 추가할 수 있다.
+  - `@Column(nullable=false, unique=true, length=10)`
+    - 해당 컬럼은 NOT NULL이며, unique_key이고 길이는 10 이하 이다.
+- `@Table(uniqueConstraints={@UniqueConstraint(name = "NAME_AGE_UNIQUE", columnNames = {"NAME", "AGE"})}`
+  - 위와 같이 `@Table`의 `uniqueConstraints` 속성을 사용하여 unique 제약조건을 걸 수 있다.
+  - `NAME`과 `AGE` 컬럼을 unique_key 제약 조건으로 설정한다.
+
+- 본 기능은 DDL을 자동 생성할 때만 사용되고 애플리케이션의 실행 로직에는 영향을 주지 않는다.
 
 ## 📣 Reference
 본 포스팅은 김영한님의 강의를 듣고 스스로 정리 및 추가한 내용입니다.
