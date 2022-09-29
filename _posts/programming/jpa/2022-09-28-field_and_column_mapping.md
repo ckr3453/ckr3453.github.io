@@ -21,15 +21,17 @@ Entity 클래스 안에 필드를 대상으로 다양한 애노테이션을 적�
 
 ## @GeneratedValue
 - 해당 컬럼에 PK를 위한 auto increments 전략을 사용할 수 있다. (PK 자동 할당)
+
   |옵션|설명|사용예|
   |---|---|---|
   |`GenerationType.AUTO`|설정된 데이터베이스에 따라 자동으로 지정된다 (기본값)|`@GeneratedValue(strategy=Generation.AUTO)`|
-  |`GenerationType.IDENTITY`|데이터베이스가 자동으로 auto_increment를 통해 기본키를 생성한다.|`@GeneratedValue(strategy=Generation.IDENTITY)`|
-  |`GenerationType.SEQUENCE`|@SequenceGenerator를 통해 설정된 데이터베이스의 시퀀스를 통해 자동으로 기본키를 생성한다.|`@GeneratedValue(strategy=Generation.SEQUENCE)`|
+  |`GenerationType.IDENTITY`|데이터베이스가 자동으로 auto_increment를 통해 기본키를 생성한다. 주로 MySQL, PostgreSQL, SQL Server, DB2가 사용한다.|`@GeneratedValue(strategy=Generation.IDENTITY)`|
+  |`GenerationType.SEQUENCE`|@SequenceGenerator를 통해 설정된 데이터베이스의 시퀀스를 통해 자동으로 기본키를 생성한다. Oracle, PostgreSQL, DB2, H2가 사용한다.|`@GeneratedValue(strategy=Generation.SEQUENCE)`|
   |`GenerationType.TABLE`|@TableGenerator를 통해 설정된 키 생성용 테이블을 통해 데이터베이스가 자동으로 기본키를 생성한다.|`@GeneratedValue(strategy=Generation.TABLE)`|
 
 ## @Column
 - 해당 애노테이션의 속성을 통하여 대상 컬럼에 제약조건 등을 설정할 수 있다.
+
   |속성|설명|사용예|
   |---|---|---|
   |`name`|DB 컬럼명을 정의한다.(설정하지 않을 시 필드명이 DB 컬럼명이 된다.)|`@Column(name="COLUMN_NAME")`|
@@ -44,15 +46,18 @@ Entity 클래스 안에 필드를 대상으로 다양한 애노테이션을 적�
 
 ## @Enumerated
 - 자바 Enum 타입 객체를 매핑해 DB에 저장할 수 있다. Enum의 특성에 따라 2가지 속성이 있다.
+
   |옵션|설명|사용예|
   |---|---|---|
   |`EnumType.ORDINAL`|입력받은 Enum 타입 객체의 순서를 저장한다. (기본값)|`@Enumerated(EnumType.ORDINAL)`|
   |`EnumType.STRING`|입력받은 Enum 타입 객체의 이름(값)을 저장한다.|`@Enumerated(EnumType.STRING)`|
-  - **주의**
-    - Enum의 새로운 타입이 추가 될 때 순서가 바뀔 수 있으므로 가급적 `EnumType.ORDINAL` 사용은 권장하지 않는다.
+
+- **주의**
+  - Enum의 새로운 타입이 추가 될 때 순서가 바뀔 수 있으므로 가급적 `EnumType.ORDINAL` 사용은 권장하지 않는다.
   
 ## @Temporal
 - 자바가 제공하는 날짜 타입과 DB의 날짜관련 타입을 매핑하여 저장할 수 있다.
+
   |옵션|설명|사용예|
   |---|---|---|
   |`TemporalType.DATE`|yyyy-mm-dd 형식의 date 타입을 저장한다.(필드 타입이 `LocalDate`인 경우와 동일)|`@Temporal(TemporalType.DATE)`|
