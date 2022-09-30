@@ -2,8 +2,8 @@
 title: "단방향 연관관계"
 categories: 
     - jpa
-date: 2022-09-28
-last_modified_at: 2022-09-29
+date: 2022-09-30
+last_modified_at: 2022-09-30
 # tags:
 #     - 태그1
 #     - 태그2
