@@ -48,7 +48,7 @@ Team findTeam = findMember.getTeam();
 ## 단방향에서 양방향으로 연관관계 설정하기
 기존 연관관계를 양방향 연관관계로 수정하면 다음과 같이 표현할 수 있다.
 
-<center><img src="https://user-images.githubusercontent.com/36228833/193238678-a29802d1-75a2-4559-a8db-22a67ea42e0d.png"></center>
+<center><img src="https://user-images.githubusercontent.com/36228833/193282200-75ac8ab4-2268-4840-95c9-d5ad08f75305.png"></center>
 
 - 단방향에서 양방향으로 바꿨음에도 **기존 테이블 연관관계는 변하지 않는다** Why?
   - 두 테이블 간의 **외래키가 존재한다면 양방향이 성립**되기 때문이다.
@@ -118,7 +118,7 @@ List<Member> members = findTeam.getMembers();
     - 외래키인 `TEAM_ID`를 활용하여 join 수행 가능
 
 ### 둘중 하나로 외래키를 관리해야 한다.
-<center><img src="https://user-images.githubusercontent.com/36228833/193238678-a29802d1-75a2-4559-a8db-22a67ea42e0d.png"></center>
+<center><img src="https://user-images.githubusercontent.com/36228833/193282446-4bea20b3-8dbc-49eb-a40b-6ea454fbc957.png"></center>
 
 - 객체 연관관계가 양방향이 되면서 고민에 빠진다.
   - 팀의 멤버를 바꾸고 싶거나 / 멤버가 새로운 팀으로 들어가고 싶을 때
@@ -140,7 +140,7 @@ List<Member> members = findTeam.getMembers();
 - **외래키가 있는곳을 주인으로** 설정하라.
 - 여기서는 `MEMBER` 테이블에 외래키(TEAM_ID)가 있으므로 `Member.team`이 연관관계의 주인이다!
 
-<center><img src="https://user-images.githubusercontent.com/36228833/193238678-a29802d1-75a2-4559-a8db-22a67ea42e0d.png"></center>
+<center><img src="https://user-images.githubusercontent.com/36228833/193282539-516f363d-ff5c-4f28-847f-10f539bcb9d1.png"></center>
 
 - 외래키가 있는 `Member.team`이 연관관계의 주인이 되어야하는 이유
   - 물론 복잡한 설정을 통해 `Team.members`가 연관관계의 주인이 될 수도 있다.
