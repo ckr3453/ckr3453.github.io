@@ -89,13 +89,54 @@ Entity 클래스 안에 필드를 대상으로 다양한 애노테이션을 적�
   - `@EntityListeners(AuditingEntityListener.class)`
     - `Entity`에서 이벤트가 발생할 때마다 특정 로직을 실행시킬 수 있는 `@EntityListeners`의 인자로 JPA에서 Auditing 기능을 수행하는 리스너 객체인 `AuditingEntityListener`를 넘기면 해당 `Entity`에 선언된 `@CreateDate`, `@LastModifiedDate`를 추적하여 값 변경 시 해당 값을 자동으로 업데이트 해준다.
 
-## 실제 구성 예제
+## 예제 구현
 해당 내용들을 참고하여 다음과 같은 요구사항을 구현해보자.
 
 1. 회원은 일반 회원과 관리자로 구분해야 한다.
 2. 회원 가입일과 수정일이 있어야 한다.
 3. 회원을 설명할 수 있는 필드가 있어야 한다. 이 필드는 길이 제한이 없다.
 
+```java
+public enum RoleType {
+  GUEST, USER, ADMIN
+}
+```
+
+```java
+import javax.persistence.*; 
+import java.time.LocalDate; 
+import java.time.LocalDateTime; 
+import java.util.Date; 
+
+@Entity 
+public class Member { 
+  @Id 
+  private Long id; 
+
+  @Column(name = "name") 
+  private String username;
+
+  private Integer age;
+
+  // 회원 역할 구분
+  @Enumerated(EnumType.STRING) 
+  private RoleType roleType;
+  
+  // 회원 가입일
+  @Temporal(TemporalType.TIMESTAMP) 
+  private Date createdDate;
+  
+  // 회원 수정일
+  @Temporal(TemporalType.TIMESTAMP) 
+  private Date lastModifiedDate;
+
+  // 설명란
+  @Lob 
+  private String description; 
+
+  //Getter, Setter… 
+} 
+```
 
 ## 📣 Reference
 본 포스팅은 김영한님의 강의를 듣고 스스로 정리 및 추가한 내용입니다.
