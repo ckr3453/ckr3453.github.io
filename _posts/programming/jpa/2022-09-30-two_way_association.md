@@ -3,7 +3,7 @@ title: "연관관계 매핑 - 양방향 연관관계와 연관관계의 주인"
 categories: 
     - jpa
 date: 2022-09-30
-last_modified_at: 2022-09-30
+last_modified_at: 2022-10-04
 # tags:
 #     - 태그1
 #     - 태그2
@@ -132,8 +132,7 @@ List<Member> members = findTeam.getMembers();
 - 객체의 두 관계중 하나를 연관관계의 주인으로 지정한다.
 - **연관관계의 주인만이 외래키를 관리(등록, 수정)한다.** (INSERT, UPDATE)
 - **연관관계의 주인이 아닌쪽은 읽기만 가능하다.** (SELECT)
-- **연관관계의 주인이 아닌쪽이 mappedBy 속성으로 주인을 지정**하며 주인은 mappedBy 속성을 사용하지 않는다.
-  - mappedBy : ?에 의해서 매핑이 되었다는 의미
+- **연관관계의 주인이 아닌쪽이 mappedBy 속성으로 주인을 지정**하며 주인은 mappedBy 속성을 사용하지 않는다. - mappedBy : ?에 의해서 매핑이 되었다는 의미
 
 ### 그렇다면 누구를 주인으로 설정해야할까?
 
@@ -149,6 +148,136 @@ List<Member> members = findTeam.getMembers();
   - 또한 데이터베이스 입장에서 봤을 때 외래키를 가진 테이블 쪽이 N의 관계를 가짐 (반대편은 1, 즉 N:1 관계)
     - 즉, **`@ManyToOne`이 연관관계의 주인**이 된다.
 
+## 주의할 점
+
+양방향 매핑 시 가장 많이 실수하는 부분을 알아보자.
+
+### 연관관계의 주인에 값을 입력하지 않음
+
+```java
+Team team = new Team();
+team.setName("TeamA");
+em.persist(team);
+
+Member member = new Member();
+member.setName("member1");
+
+// 역방향(주인이 아닌방향)만 연관관계 설정
+team.getMembers().add(member);
+
+em.persist(member);
+```
+
+`team.getMembers()`로 호출하는 `members`의 연관관계의 주인은 `team`이다.
+
+그러나 연관관계의 주인에 값을 입력하지 않고 주인이 아닌 반대방향에만 값을 입력하고 있다. (`team.getMembers().add(member);`)
+
+이렇게 될 경우 실제 테이블에는 해당 멤버의 `team` 값이 들어가지 않게된다. 그래서 다음과 같이 수정해야 한다.
+
+```java
+Team team = new Team();
+team.setName("TeamA");
+em.persist(team);
+
+Member member = new Member();
+member.setName("member1");
+
+// 연관관계의 주인에 값을 입력
+member.setTeam(team);
+
+// 역방향(주인이 아닌방향)만 연관관계 설정
+team.getMembers().add(member);
+
+em.persist(member);
+```
+
+그렇다고 해서 연관관계의 주인에만 값을 입력하라는 의미가 아니다.
+
+양방향 연관관계에 **서로 값을 입력해줘야 테이블의 값 입력은 물론, 순수한 객체 관계가 유지**될 수 있다.
+
+아래와 같이 주인에만 값을 저장할 경우 `EntityManager`를 통해 주인객체의 역방향을 호출할 때 제대로 호출되지 않는다. (1차 캐시에 이미 올라가 있는 객체를 불러오게 됨)
+
+```java
+Team team = new Team();
+team.setName("TeamA");
+em.persist(team);
+
+Member member = new Member();
+member.setName("member1");
+
+// 연관관계의 주인에 값을 입력
+member.setTeam(team);
+
+// 역방향에는 값을 입력하지 않음
+// team.getMembers().add(member);
+
+em.persist(member);
+
+Team findTeam = em.find(Team.class, team.getId());  // 실제 저장된 값이 아닌 1차 캐시에 저장된 team 객체를 불러옴 (members에 값이 없는 상태의 객체)
+List<Member> members = findTeam.getMembers();       // members에 값을 입력한 적이 없으니 조회할 수 없음. (그러나 실제 DB에는 저장된 상태)
+```
+
+- **순수 객체 상태를 고려해서 항상 양쪽에 값을 설정하자!**
+- 연관관계 편의 메소드(양쪽에 값을 저장하는 메소드)를 만들어서 활용하자.
+  - ex) `member.setTeam(team)` 호출 시 `team.getMembers().add(member)`를 추가
+    ```java
+    @Entity
+    public class Member {
+      ...
+      public void setTeam(Team team){
+          this.team = team;
+          team.getMembers().add(this);
+      }
+    }
+    ```
+  - 그러나 연관관계 메소드가 **양쪽에 전부 있으면 무한루프에 빠질 수 있으니 조심**하자.
+
+### toString(), Lombok, JSON 생성 라이브러리 사용 시 주의
+
+양방향 매핑 시 `toString()`등을 통해 객체(엔티티)를 json으로 변환하여 서로 호출할 경우 무한루프에 빠질 수 있다.
+
+```java
+@Entity
+public class Member {
+  ...
+  @Override
+  public String toString(){
+      return "Member {" +
+              "id=" + id +
+              ", team=" + team +  // Team 객체를 호출
+              '}';
+  }
+}
+
+@Entity
+public class Team {
+  ...
+  @Override
+  public String toString(){
+      return "Team {" +
+              "id=" + id +
+              ", members=" + members + // Member 객체를 호출
+              '}';
+  }
+}
+
+Team findTeam = em.find(Team.class, team.getId());
+System.out.println("team=" + findTeam); // 무한루프 발생!
+```
+
+- 왠만해선 `Lombok` 라이브러리를 통해 `toString()` 사용을 지양하자.
+- (JSON 생성 라이브러리를 통한) Controller에서 `Entity` 반환을 지양하고 DTO로 반환하자.
+  - `toString()`가 있을 경우 무한루프를 야기할 수 있음.
+  - API Spec에 변화가 생기는 문제 발생
+
+## 정리
+- 사실 단방향 매핑만으로도 이미 연관관계 매핑은 완료가 된 것이다.
+- 양방향 매핑은 반대 방향으로 조회(객체 그래프 탐색) 기능이 추가된 것 뿐이다.
+- 단방향 매핑을 잘하고 양방향은 필요할 때 추가해도 된다.
+  - 객체관계를 위한 것이므로 테이블에 영향을 주지 않기 때문이다.
+- 비즈니스 로직을 기준으로 연관관계의 주인을 선택하면 안된다.
+  - **외래키의 위치를 기준으로** 정해야 한다!
+  
 ## 📣 Reference
 본 포스팅은 김영한님의 강의를 듣고 스스로 정리 및 추가한 내용입니다.
 
