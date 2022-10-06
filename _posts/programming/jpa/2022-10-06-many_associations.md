@@ -2,8 +2,8 @@
 title: "연관관계 매핑 - 다양한 연관관계 (작성중"
 categories: 
     - jpa
-date: 2022-09-30
-last_modified_at: 2022-10-04
+date: 2022-10-06
+last_modified_at: 2022-10-07
 # tags:
 #     - 태그1
 #     - 태그2
@@ -44,6 +44,8 @@ excerpt: "다양한 연관관계를 알아보자"
 
 - 다대일 단방향
   - ![image](https://user-images.githubusercontent.com/36228833/194346109-b38a9955-1d7a-45f4-8339-9c79bff2f259.png)
+  - 설계 의도
+    - `Member`가 속한 `Team`을 추가하거나 수정하고 싶을 때
   - DB 입장에선 Member와 Team의 관계가 N:1이므로 외래키가 Member쪽에 속한다.
     - N쪽에 항상 외래키가 존재해야함.
   - 객체 입장에선 **외래키가 존재하는 엔티티에 참조용 필드를 만들어서 연관관계를 설정**하면 된다.
@@ -59,6 +61,9 @@ excerpt: "다양한 연관관계를 알아보자"
 
 - 다대일 양방향
   - ![image](https://user-images.githubusercontent.com/36228833/194346248-7ab7820b-90d4-47c3-a5b8-0a4f6c3d2472.png)
+  - 설계 의도
+    - `Member` 입장에서 `Member`가 속한 `Team`도 추가하거나 수정할 수 있고
+    - `Team` 입장에서 `Team`에 속한 `Member`들을 조회해야 할 때
   - 연관관계 주인으로 설정된 **반대편에 참조용 객체를 생성**하여 이어주면 된다.
     ```java
     @Entity
@@ -77,13 +82,63 @@ excerpt: "다양한 연관관계를 알아보자"
 
 ## 일대다 (1:N)
 
-일대다의 관계에서 일(1)을 연관관계 주인으로 설정할 수 있다. (권장하지 않음)
+일대다의 관계에서 일(1)을 연관관계 주인으로 설정할 수 있다.
 
 - 일대다 단방향
   - ![image](https://user-images.githubusercontent.com/36228833/194346363-a2626a73-639e-4ead-9603-637e069bf26d.png)
-  - 1의 입장인 `Team`에서 연관관계의 주인으로써 관리하려고 할때
+  - 설계 의도
+    - `Team`은 `Team`에 속한 `Member`들을 추가하거나 수정하고 싶을 때
 
+  - 1의 입장인 `Team`에서 연관관계의 주인을 관리
+    ```java
+    @Entity
+    public class Team {
+      ...
+      @OneToMany
+      @JoinColumn(name = "TEAM_ID")
+      private List<Member> members = new ArrayList<>();
+    }
 
+    ...
+    // 예제
+    Member member = new Member();
+    member.setUsername("member1");
+
+    em.persist(member);
+
+    Team team = new Team();
+    team.setName("teamA");
+    team.getMembers().add(member);  // 연관관계 주인 활용
+
+    em.persist(team);
+    ```
+  - 일반적으로 수행되는 `insert` 쿼리에 추가로 `update` 쿼리가 실행 된다.
+    - team 엔티티를 저장했지만 연관 관계는 반대편(Member) 테이블을 가리키고 있으므로 반대편 테이블의 `update` 쿼리가 한번 더 실행됨
+    - 의도하지 않은 쿼리가 수행되므로 **복잡도가 올라가며 및 성능상 좋지 않다.**
+
+  - 테이블 일대다 관계는 항상 다(N) 쪽에 외래키가 있음.
+  - 객체와 테이블의 차이 때문에 **반대편 테이블의 외래키를 관리**하는 특이한 구조가 된다.
+  - `@JoinColumn`을 사용하지 않으면 조인 테이블 방식을 사용하므로 `@JoinColumn`을 꼭 써야한다.
+    - 조인 테이블 방식 : 연관관계를 위해 두 테이블 사이에 중간 테이블을 생성하여 매핑한다 (좋지 않음)
+  - 일대다 단방향 매핑보다는 **다대일 양방향 매핑을 사용**하자!
+
+- 일대다 양방향
+  - ![image](https://user-images.githubusercontent.com/36228833/194356306-82ef8c6e-6947-4bbc-affb-b16e0d4eeecb.png)
+  - 설계 의도
+    - `Team`은 `Team`에 속한 `Member`들을 추가하거나 수정하고 싶고
+    - `Member`는 `Member`가 속한 팀을 조회하고 싶을 때
+  - 공식 스펙상으로 지원하지 않으나 야매 방식(insertable, updatable 속성을 사용하여 읽기전용 필드로 만듬)으로 처리할 수 있음
+    ```java
+    @Entity
+    public class Member {
+      ...
+      @ManyToOne
+      @JoinColumn(name="TEAM_ID", insertable=false, updatable=false)
+      private Team team;
+    }
+    ```
+  - `@JoinColumn`의 속성으로 해당 필드를 수정하지 못하게 만듦으로 써 read-only로 만듬 (양방향 매핑 구현)
+  - **복잡하게 하지말고 깔끔하게 다대일 양방향을 사용하자.**
 
 
 
