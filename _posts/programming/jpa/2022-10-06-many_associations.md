@@ -140,7 +140,108 @@ excerpt: "다양한 연관관계를 알아보자"
   - `@JoinColumn`의 속성으로 해당 필드를 수정하지 못하게 만듦으로 써 read-only로 만듬 (양방향 매핑 구현)
   - **복잡하게 하지말고 깔끔하게 다대일 양방향을 사용하자.**
 
+## 일대일 (1:1)
 
+- **주 테이블**이나 **대상 테이블** 중에 외래키 선택 가능하다.
+  - 주 테이블에 외래키
+  - 대상 테이블에 외래키
+- 외래키에 데이터베이스 유니크 제약조건을 추가해야 함.
+
+- 주 테이블에 외래키 - 단방향
+  - ![image](https://user-images.githubusercontent.com/36228833/194869769-48974508-b8be-41d9-9907-0f2d3da22768.png)
+  - 설계 의도
+    - 각 `Member`(주 테이블)는 락커를 하나 소유할 수 있다.
+    - 다대일(`@ManyToOne`) 단방향 매핑과 유사함
+    ```java
+    @Entity
+    public class Locker {
+      @Id @GeneratedValue
+      private Lond id;
+
+      private String name;
+    }
+
+    @Entity 
+    public class Member {
+
+      @Id @GeneratedValue
+      private Long id;
+
+      @OneToOne
+      @JoinColumn(name = "LOCKER_ID")
+      private Locker locker;
+
+      private String username;
+    }
+    ```
+  - 추후에 하나의 `Locker`를 여러명의 `Member`가 사용할 수 있도록 (다대일) 관계를 확장할 수 있다. (DB 입장)
+  - `Member`에 `Locker`가 있는게 성능상으로 유리하다
+    - ex) `Member`가 주 테이블이기 때문에 `Member` 조회는 필수적이다. `Member`가 가진 `Locker` 정보를 확인하기 위해 굳이 `Locker`를 대상으로 한번 더 조회하지 않아도 된다.
+
+- 주 테이블에 외래키 - 양방향
+  - ![image](https://user-images.githubusercontent.com/36228833/194869818-a3dbda19-0018-49f0-9d9a-3d848a33aaac.png)
+  - 설계 의도
+    - 각 `Member`는 락커를 하나 소유할 수 있고
+    - `Locker` 는 자신을 소유한 `Member`를 알수있음.
+  ```java
+    @Entity
+    public class Locker {
+      @Id @GeneratedValue
+      private Lond id;
+
+      private String name;
+
+      @OneToOne(mappedBy= "locker")
+      private Member member;
+
+    }
+
+    @Entity 
+    public class Member {
+
+      @Id @GeneratedValue
+      private Long id;
+
+      @OneToOne
+      @JoinColumn(name = "LOCKER_ID")
+      private Locker locker;
+
+      private String username;
+    }
+    ```
+  - 다대일 양방향 매핑처럼 **외래키가 있는곳이 연관관계의 주인**
+    - 예제에선 `Member`가 주인
+  - 반대편은 `mappedBy`를 적용
+
+- **주 테이블 외래키 정리**
+  - 주 객체가 대상 객체의 참조를 가지는 것 처럼 주 테이블에 외래키를 두고 대상 테이블을 찾는다.
+  - **객체지향 개발자**가 선호한다.
+  - JPA 매핑이 편리하다.
+  - 장점 : 주 테이블만 조회해도 (외래키로) 대상 테이블에 데이터가 있는지 확인 가능하다. (성능상 유리)
+  - 단점 : 값이 없으면 외래키에 null을 허용한다.
+
+- 대상 테이블에 외래키 - 단방향 (불가능)
+  - ![image](https://user-images.githubusercontent.com/36228833/194869880-b9db37f7-087f-4725-a244-4f11b3263c67.png)
+  - `Member` 엔티티의 `locker`가 연관관계의 주인으로 설정하고 싶으나 외래키는 `LOCKER`에 있는 상황
+  - 일대다 단방향 같은 상황
+  - JPA에서 지원하지 않는다. 
+
+- 대상 테이블에 외래키 - 양방향
+  - ![image](https://user-images.githubusercontent.com/36228833/194869936-a8adcd67-1ba7-4145-b7e7-f6b3c2ef8f36.png)
+  - `Locker`에 있는 `member`를 연관관계 주인으로 설정하고 (`LOCKER` 테이블에 외래키가 있으므로) 양방향 연관관계를 설정
+    - 반대편인 `Member`의 `locker`를 읽기 전용으로 설정 
+  - 사실 주 테이블에 외래키 양방향과 매핑 방법은 동일하다.
+
+- **대상 테이블 외래키 정리**
+  - 대상 테이블에 외래키가 존재한다. (null 허용 문제 해결)
+  - **전통적인 데이터베이스 개발자**들이 많이 선호한다.
+  - 장점 : 주 테이블과 대상 테이블을 **일대일에서 일대다 관계로 변경할 때 테이블 구조가 유지**된다. (확장에 유리)
+  - 단점 : 프록시 기능의 한계로 **지연 로딩으로 설정해도 항상 즉시 로딩된다.**
+    - JPA 입장에서는 `Member` 객체를 로딩할 때 외래키 대상인 `locker`에 값이 있는지 없는지 알아야함.
+    - 그러나 외래키는 반대편인 `LOCKER`가 관리하기 때문에 `MEMBER` 테이블 말고도 `LOCKER` 테이블까지 전부 조회 해봐야함.
+    - 결국 **주 테이블 과 대상 테이블 둘다 확인하는 과정을 필히 거치므로** 지연 로딩이 아무 의미 없음. (그래서 항상 즉시 로딩이 됨)
+      - 지연 로딩 : 실제 객체를 사용하는 시점에 조회
+      - 즉시 로딩 : Join을 활용하여 연관된 객체까지 한번에 조회
 
 ## 📣 Reference
 본 포스팅은 김영한님의 강의를 듣고 스스로 정리 및 추가한 내용입니다.
