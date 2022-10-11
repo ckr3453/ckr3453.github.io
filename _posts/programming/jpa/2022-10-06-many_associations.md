@@ -3,7 +3,7 @@ title: "연관관계 매핑 - 다양한 연관관계 (작성중"
 categories: 
     - jpa
 date: 2022-10-06
-last_modified_at: 2022-10-07
+last_modified_at: 2022-10-11
 # tags:
 #     - 태그1
 #     - 태그2
@@ -15,6 +15,15 @@ excerpt: "다양한 연관관계를 알아보자"
 ---
 
 ## 연관관계 매핑시 고려사항
+
+- `@JoinColumn`
+  |속성|설명|기본값|
+  |---|---|---|
+  |name|매핑할 외래 키 이름|필드명 + _ + 참조하는 테이블의 기본 키 컬럼명|
+  |referencedColumnName|외래 키가 참조하는 대상 테이블의 컬럼명|참조하는 테이블의 기본키 컬럼명|
+  |foreignKey(DDL)|외래 키 제약조건을 직접 지정할 수 있다. 이 속성은 테이블을 생성할 때만 사용한다.||
+  |unique, nullable, insertable, updatable, columnDefinition, table|@Column의 속성과 같다.||
+
 - 다중성
   - 1:N(`@OneToMany`)
   - N:1(`@ManyToOne`)
@@ -41,6 +50,15 @@ excerpt: "다양한 연관관계를 알아보자"
 ## 다대일 (N:1)
 
 다대일의 관계에서 다(N)를 연관관계의 주인으로 설정한다.
+
+- `@ManyToOne`
+  |속성|설명|기본값|
+  |---|---|---|
+  |optional|false로 설정하면 연관된 엔티티가 항상 있어야 한다.|TRUE|
+  |fetch|글로벌 페치 전략을 설정한다.|`@ManyToOne`=FetchType.EAGER, `@OneToMany`=FetchType.LAZY|
+  |cascade|영속성 전이 기능을 사용한다.||
+  |targetEntity|연관된 엔티티의 타입 정보를 설정한다. 이 기능은 거의 사용하지 않는다. 컬렉션을 사용해도 제네릭으로 타입 정보를 알 수 있다.||
+
 
 - 다대일 단방향
   - ![image](https://user-images.githubusercontent.com/36228833/194346109-b38a9955-1d7a-45f4-8339-9c79bff2f259.png)
@@ -83,6 +101,14 @@ excerpt: "다양한 연관관계를 알아보자"
 ## 일대다 (1:N)
 
 일대다의 관계에서 일(1)을 연관관계 주인으로 설정할 수 있다.
+
+- `@OneToMany`
+  |속성|설명|기본값|
+  |---|---|---|
+  |mappedBy|연관관계의 주인 필드를 선택한다.||
+  |fetch|글로벌 페치 전략을 설정한다.|`@ManyToOne`=FetchType.EAGER, `@OneToMany`=FetchType.LAZY|
+  |cascade|영속성 전이 기능을 사용한다.||
+  |targetEntity|연관된 엔티티의 타입 정보를 설정한다. 이 기능은 거의 사용하지 않는다. 컬렉션을 사용해도 제네릭으로 타입 정보를 알 수 있다.||
 
 - 일대다 단방향
   - ![image](https://user-images.githubusercontent.com/36228833/194346363-a2626a73-639e-4ead-9603-637e069bf26d.png)
@@ -242,6 +268,98 @@ excerpt: "다양한 연관관계를 알아보자"
     - 결국 **주 테이블 과 대상 테이블 둘다 확인하는 과정을 필히 거치므로** 지연 로딩이 아무 의미 없음. (그래서 항상 즉시 로딩이 됨)
       - 지연 로딩 : 실제 객체를 사용하는 시점에 조회
       - 즉시 로딩 : Join을 활용하여 연관된 객체까지 한번에 조회
+
+## 다대다 (N:M) - 권장하지 않음
+- 관계형 데이터베이스
+  - 관계형 데이터베이스는 정규화된 테이블 2개로 다대다 관계를 표현할 수 없다.
+  - 연결 테이블을 추가해서 일대다 - 다대일 관계로 풀어내야 함.
+  - ![image](https://user-images.githubusercontent.com/36228833/195121179-829975c9-6b7d-434f-8f18-616d43412172.png)
+
+- 객체
+  - 객체는 컬렉션을 사용해서 객체 2개로 다대다 관계가 가능하다.
+  - ![image](https://user-images.githubusercontent.com/36228833/195121258-b31df0f6-a376-489f-b365-e6088f8bcbe0.png)
+  - 단방향, 양방향 둘다 가능하다.
+  - `@ManyToMany`를 사용한다.
+  - `@JoinTable`로 연결 테이블을 지정할 수 있다.
+    ```java
+    @Entity
+    public class Product {
+      @Id @GeneratedValue
+      private Long id;
+
+      private String name;
+
+      @ManyToMany(mappedBy = "products")
+      private List<Member> members = new ArrayList<>();
+      // getter, setter
+    }
+
+    @Entity
+    public class Member {
+      @Id @GeneratedValue
+      private Long id;
+
+      private String name;
+
+      @ManyToMany
+      @JoinTable(name = "MEMBER_PRODUCT")
+      private List<Product> products = new ArrayList<>();
+      // getter, setter
+    }
+    ```
+
+- 다대다 매핑의 한계
+  - ![image](https://user-images.githubusercontent.com/36228833/195121328-5a560d97-34d3-4298-afe0-dda3ee4a4b10.png)
+  - 편리해 보이지만 실무에서 사용하면 안됨.
+  - 연결 테이블이 단순히 연결만 하고 끝나지 않기 때문
+  - 주문시간, 수량 같은 데이터가 들어올 수 있음.
+    - 매핑 정보만 있어야 함.
+  - 중간에 연결 테이블이 존재해서 쿼리를 예측할 수 없음
+
+- 다대다 매핑 극복
+  - ![image](https://user-images.githubusercontent.com/36228833/195121426-b95fb469-b3b4-4b95-b475-4c8f4bd02618.png)
+  - 연결 테이블 용 엔티티를 추가 (연결 테이블을 엔티티로 승격)
+  - `@ManyToMany` -> `@OneToMany`, `@ManyToOne`
+  ```java
+    @Entity
+    public class Product {
+      @Id @GeneratedValue
+      private Long id;
+
+      private String name;
+
+      @OneToMany(mappedBy = "product")
+      private List<MemberProduct> memberProducts = new ArrayList<>();
+      // getter, setter
+    }
+
+    @Entity
+    public class MemberProduct {
+      @Id @GeneratedValue
+      private Long id;
+
+      @ManyToOne
+      @JoinColumn(name = "MEMBER_ID")
+      private Member member;
+
+      @ManyToOne
+      @JoinColumn(name = "PRODUCT_ID")
+      private Product product;
+    }
+
+    @Entity
+    public class Member {
+      @Id @GeneratedValue
+      private Long id;
+
+      private String name;
+
+      @OneToMany(mappedBy = "member")
+      private List<MemberProduct> memberProducts = new ArrayList<>();
+      // getter, setter
+    }
+    ```
+
 
 ## 📣 Reference
 본 포스팅은 김영한님의 강의를 듣고 스스로 정리 및 추가한 내용입니다.
