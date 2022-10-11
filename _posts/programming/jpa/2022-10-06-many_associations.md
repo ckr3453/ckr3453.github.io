@@ -1,5 +1,5 @@
 ---
-title: "연관관계 매핑 - 다양한 연관관계 (작성중"
+title: "연관관계 매핑 - 다양한 연관관계"
 categories: 
     - jpa
 date: 2022-10-06
@@ -17,10 +17,10 @@ excerpt: "다양한 연관관계를 알아보자"
 ## 연관관계 매핑시 고려사항
 
 - `@JoinColumn`
-  |속성|설명|기본값|
+  - |속성|설명|기본값|
   |---|---|---|
   |name|매핑할 외래 키 이름|필드명 + _ + 참조하는 테이블의 기본 키 컬럼명|
-  |referencedColumnName|외래 키가 참조하는 대상 테이블의 컬럼명|참조하는 테이블의 기본키 컬럼명|
+  |referencedColumnName|외래 키가 참조하는 대상 테이블의 컬럼명|참조하는 테이블의 기본키 컬럼명||
   |foreignKey(DDL)|외래 키 제약조건을 직접 지정할 수 있다. 이 속성은 테이블을 생성할 때만 사용한다.||
   |unique, nullable, insertable, updatable, columnDefinition, table|@Column의 속성과 같다.||
 
@@ -52,7 +52,7 @@ excerpt: "다양한 연관관계를 알아보자"
 다대일의 관계에서 다(N)를 연관관계의 주인으로 설정한다.
 
 - `@ManyToOne`
-  |속성|설명|기본값|
+  - |속성|설명|기본값|
   |---|---|---|
   |optional|false로 설정하면 연관된 엔티티가 항상 있어야 한다.|TRUE|
   |fetch|글로벌 페치 전략을 설정한다.|`@ManyToOne`=FetchType.EAGER, `@OneToMany`=FetchType.LAZY|
@@ -103,7 +103,7 @@ excerpt: "다양한 연관관계를 알아보자"
 일대다의 관계에서 일(1)을 연관관계 주인으로 설정할 수 있다.
 
 - `@OneToMany`
-  |속성|설명|기본값|
+  - |속성|설명|기본값|
   |---|---|---|
   |mappedBy|연관관계의 주인 필드를 선택한다.||
   |fetch|글로벌 페치 전략을 설정한다.|`@ManyToOne`=FetchType.EAGER, `@OneToMany`=FetchType.LAZY|
@@ -178,28 +178,28 @@ excerpt: "다양한 연관관계를 알아보자"
   - 설계 의도
     - 각 `Member`(주 테이블)는 락커를 하나 소유할 수 있다.
     - 다대일(`@ManyToOne`) 단방향 매핑과 유사함
-    ```java
-    @Entity
-    public class Locker {
-      @Id @GeneratedValue
-      private Lond id;
+      ```java
+      @Entity
+      public class Locker {
+        @Id @GeneratedValue
+        private Lond id;
 
-      private String name;
-    }
+        private String name;
+      }
 
-    @Entity 
-    public class Member {
+      @Entity 
+      public class Member {
 
-      @Id @GeneratedValue
-      private Long id;
+        @Id @GeneratedValue
+        private Long id;
 
-      @OneToOne
-      @JoinColumn(name = "LOCKER_ID")
-      private Locker locker;
+        @OneToOne
+        @JoinColumn(name = "LOCKER_ID")
+        private Locker locker;
 
-      private String username;
-    }
-    ```
+        private String username;
+      }
+      ```
   - 추후에 하나의 `Locker`를 여러명의 `Member`가 사용할 수 있도록 (다대일) 관계를 확장할 수 있다. (DB 입장)
   - `Member`에 `Locker`가 있는게 성능상으로 유리하다
     - ex) `Member`가 주 테이블이기 때문에 `Member` 조회는 필수적이다. `Member`가 가진 `Locker` 정보를 확인하기 위해 굳이 `Locker`를 대상으로 한번 더 조회하지 않아도 된다.
@@ -209,32 +209,32 @@ excerpt: "다양한 연관관계를 알아보자"
   - 설계 의도
     - 각 `Member`는 락커를 하나 소유할 수 있고
     - `Locker` 는 자신을 소유한 `Member`를 알수있음.
-  ```java
-    @Entity
-    public class Locker {
-      @Id @GeneratedValue
-      private Lond id;
+      ```java
+        @Entity
+        public class Locker {
+          @Id @GeneratedValue
+          private Lond id;
 
-      private String name;
+          private String name;
 
-      @OneToOne(mappedBy= "locker")
-      private Member member;
+          @OneToOne(mappedBy= "locker")
+          private Member member;
 
-    }
+        }
 
-    @Entity 
-    public class Member {
+        @Entity 
+        public class Member {
 
-      @Id @GeneratedValue
-      private Long id;
+          @Id @GeneratedValue
+          private Long id;
 
-      @OneToOne
-      @JoinColumn(name = "LOCKER_ID")
-      private Locker locker;
+          @OneToOne
+          @JoinColumn(name = "LOCKER_ID")
+          private Locker locker;
 
-      private String username;
-    }
-    ```
+          private String username;
+        }
+        ```
   - 다대일 양방향 매핑처럼 **외래키가 있는곳이 연관관계의 주인**
     - 예제에선 `Member`가 주인
   - 반대편은 `mappedBy`를 적용
