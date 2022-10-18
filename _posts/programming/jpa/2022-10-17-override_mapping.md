@@ -1,9 +1,9 @@
 ---
-title: "고급 연관관계 매핑 - 상속관계 매핑 (작성중)"
+title: "고급 연관관계 매핑 - 상속관계 매핑"
 categories: 
     - jpa
 date: 2022-10-17
-last_modified_at: 2022-10-17
+last_modified_at: 2022-10-19
 # tags:
 #     - 태그1
 #     - 태그2
@@ -23,16 +23,20 @@ excerpt: "상속관계 매핑을 알아보자"
 
 ## 주요 어노테이션
 - `@Inheritence(strategy=InheritanceType.XXX)`
+- 슈퍼타입 서브타입 논리 모델을 실제 물리 모델로 구현하는 전략들을 사용한다.
   - JOINED : 조인 전략
   - SINGLE_TABLE : 단일 테이블 전략 (default)
   - TABLE_PER_CLASS : 구현 클래스마다 테이블 전략
 
 - `@DiscriminatorColumn(name="DTYPE")`
+  - 슈퍼타입의 엔티티에 서브타입 구분을 위한 컬럼을 추가한다.
+  - DTYPE 이 default
 
 - `@DiscriminatorValue("XXX")`
-
+  - 서브타입 엔티티별로 DTYPE 컬럼에 들어갈 값을 지정할 수 있다.
+  - Entity 명이 default
 ## 구현 방법
-- 슈퍼타입 서브타입 논리 모델을 실제 물리 모델로 구현하는 방법(전략들)
+- 
   - **조인 전략** (각각의 테이블로 변환)
     - ![image](https://user-images.githubusercontent.com/36228833/196205923-61784370-8757-4ff0-9adb-00a68cfb7646.png)
     - ITEM 이라는 테이블을 만들고 ALBUM, MOVIE, BOOK 테이블을 만들어서 나눈뒤 필요할 때 JOIN으로 가져온다.
