@@ -35,8 +35,8 @@ excerpt: "상속관계 매핑을 알아보자"
 - `@DiscriminatorValue("XXX")`
   - 서브타입 엔티티별로 DTYPE 컬럼에 들어갈 값을 지정할 수 있다.
   - Entity 명이 default
+   
 ## 구현 방법
-- 
   - **조인 전략** (각각의 테이블로 변환)
     - ![image](https://user-images.githubusercontent.com/36228833/196205923-61784370-8757-4ff0-9adb-00a68cfb7646.png)
     - ITEM 이라는 테이블을 만들고 ALBUM, MOVIE, BOOK 테이블을 만들어서 나눈뒤 필요할 때 JOIN으로 가져온다.
@@ -222,6 +222,7 @@ excerpt: "상속관계 매핑을 알아보자"
     - 단점
       - 여러 자식 테이블을 함께 조회할 때 성능이 느리다. (union)
       - 자식 테이블을 통합해서 쿼리하기 어렵다.
+      
 ## 📣 Reference
 본 포스팅은 김영한님의 강의를 듣고 스스로 정리 및 추가한 내용입니다.
 
