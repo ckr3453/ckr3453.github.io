@@ -11,7 +11,7 @@ last_modified_at: 2022-10-28
 toc: true
 toc_sticky: true
 # toc_label: "MYSELF"
-excerpt: "프록시에 대해 알아보자."
+excerpt: "연관관계에서 즉시 로딩과 지연 로딩이 하는 역할에 대해 알아보자."
 ---
 
 ## 지연로딩 (Lazy Loading)
@@ -24,7 +24,8 @@ excerpt: "프록시에 대해 알아보자."
 
 JPA는 다음과 같이 연관관계 어노테이션 속성으로 프록시 조회를 통한 지연로딩을 할 수 있도록 지원한다.
 
-(이미지)
+<center><img width="870" alt="image" src="https://user-images.githubusercontent.com/36228833/198597554-2f8afdf0-82e5-4ca3-bb02-9aa20452d8f0.png"></center>
+
 
 ```java
 @Entity
@@ -55,7 +56,7 @@ System.out.println(member.getTeam().getName()); // 이때 프록시 객체에 �
 
 JPA는 지연로딩에 이어 연관관계 어노테이션 속성으로 즉시로딩을 할 수 있도록 지원한다.
 
-(이미지)
+<center><img width="864" alt="image" src="https://user-images.githubusercontent.com/36228833/198598094-bf4cefde-c2c9-47fe-810a-2e3059ec6c76.png"></center>
 
 ```java
 @Entity
