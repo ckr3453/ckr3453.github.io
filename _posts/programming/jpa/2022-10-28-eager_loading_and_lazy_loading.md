@@ -89,8 +89,17 @@ JPA 구현체는 가능하면 조인을 사용하여 SQL을 한번에 조회하�
   - 즉시로딩 사용시 아래와 같은 일이 벌어진다.
 
 - 즉시 로딩을 적용하면 예상하지 못한 SQL이 발생한다.
+  - 연관관계가 얽혀있는 엔티티 조회시 join 쿼리를 수행함으로써 **얽혀 있는 정도에따라 join 하는 테이블이 상당히 많아질 수 있다.**
+    - 1~2개 테이블이면 괜찮으나 한번 조회할 때마다 여러 테이블을 join 해서 가져오게되면 성능 이슈가 발생하게 된다.
 
 - 즉시 로딩은 JPQL에서 N+1 문제를 일으킨다.
+  - 아래와 같이 JPQL을 사용해서 결과를 가져온다고 가정해보자.
+    - `em.createQuery("select m from Member m", Member.class).getResultList();`
+    - `em.find`로 객체 조회를 하는 경우 JPA가 내부적으로 최적화를 진행한다.
+    - 그러나 JPQL로 쿼리를 직접 수행한 경우는 다음과 같은 문제가 발생한다.
+      - `select m from Member m`을 `select * from Member` 로 변경하여 수행한다.
+      - 만약 Member 에 연관 관계가 즉시로딩으로 설정되어 있을 경우 해당 연관관계를 한번에 모두 가져와야 한다.
+        - Team이 FetchType.EAGER로 설정되어 있으므로 `select * from Team where TEAM_ID = '..'`
 
 - `@ManyToOne`, `@OneToOne` 은 기본이 즉시 로딩이다.
   - FetchType.LAZY 를 통해 지연 로딩으로 수정해야한다!
