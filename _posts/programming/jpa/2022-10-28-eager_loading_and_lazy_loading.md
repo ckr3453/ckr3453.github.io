@@ -96,14 +96,41 @@ JPA 구현체는 가능하면 조인을 사용하여 SQL을 한번에 조회하�
   - 아래와 같이 JPQL을 사용해서 결과를 가져온다고 가정해보자.
     - `em.createQuery("select m from Member m", Member.class).getResultList();`
     - `em.find`로 객체 조회를 하는 경우 JPA가 내부적으로 최적화를 진행한다.
-    - 그러나 JPQL로 쿼리를 직접 수행한 경우는 다음과 같은 문제가 발생한다.
+    - 그러나 **JPQL로 쿼리를 직접 수행한 경우**는 다음과 같은 문제가 발생한다.
       - `select m from Member m`을 `select * from Member` 로 변경하여 수행한다.
       - 만약 Member 에 연관 관계가 즉시로딩으로 설정되어 있을 경우 해당 연관관계를 한번에 모두 가져와야 한다.
-        - Team이 FetchType.EAGER로 설정되어 있으므로 `select * from Team where TEAM_ID = '..'`
+        - Team이 FetchType.EAGER로 설정되어 있으므로 **관련된 Team을 조회하는 쿼리를 추가적으로 수행**한다. 
+          - `select * from Team where TEAM_ID = '..'`
+  - 결국 `select m from Member m` 이라는 쿼리 1개를 수행 하였는데 n개의 의도하지않은 쿼리가 추가적으로 수행되는 N+1 문제가 발생한다.
+  - 이를 해결하기 위해 몇가지 방법이 존재한다.
+    - 즉시로딩에서 지연로딩으로 수정
+    - JQPL 사용시 FetchJoin을 사용하여 한번에 원하는 연관관계 엔티티를 가져오는 방법
+    - @EntityGraph 사용하기 (관계가 조금만 복잡해져도 권장하지 않음)
+    - BatchSize를 사용하여 여러개의 쿼리를 나가게 하는 대신 하나의 in 쿼리로만 나가게끔 최적화하는 방법
 
 - `@ManyToOne`, `@OneToOne` 은 기본이 즉시 로딩이다.
   - FetchType.LAZY 를 통해 지연 로딩으로 수정해야한다!
   - `@OneToMany`, `@ManyToMany`는 기본이 지연로딩이기 때문에 괜찮다.
+
+## 지연로딩 실무 활용 예제
+
+<center><img src="https://user-images.githubusercontent.com/36228833/198886987-b479b3fe-7487-47ef-a231-cb238665d3ad.png"></center>
+
+- 상황
+  - Member와 Team은 자주 함께 사용한다.(즉시 로딩)
+  - Member와 Order는 가끔 사용한다.(지연 로딩)
+  - Order와 Product는 자주 함꼐 사용한다.(즉시 로딩)
+  - 사용 빈도에 따라 예를 들었으나 실무에서는 무조건 지연로딩으로 설정할 것을 권장한다.
+
+<center><img src="https://user-images.githubusercontent.com/36228833/198887018-61166a08-fd8b-4f95-864d-4f4a6d740ebc.png"></center>
+
+- Member와 Team은 즉시로딩으로 설정했기 때문에 한번에 조회 된다.
+- Order는 지연로딩으로 설정했기 때문에 프록시 객체를 사용하여 조회한다.
+
+<center><img src="https://user-images.githubusercontent.com/36228833/198887059-28f04e88-4334-4ce4-8a78-94cacc7e1047.png"></center>
+
+- Order를 조회하는 순간 프록시 객체가 초기화 되서 조회되고
+- Order와 Product는 즉시 로딩으로 설정되어있기 때문에 Order를 가져오는 시점에 Product까지 한번에 조회 된다.
 
 
   
