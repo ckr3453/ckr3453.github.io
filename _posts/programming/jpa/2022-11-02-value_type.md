@@ -74,19 +74,19 @@ JPA는 데이터 타입을 최상위 레벨로 봤을 때 엔티티 타입과 �
   - Entity가 아니다.
   - 당연히 Entity가 아니다보니 추적이 안된다.
 
-예시로 알아보자.
+#### 임베디드 타입 활용 기본 예시
 
-(이미지)
+<center><img src="https://user-images.githubusercontent.com/36228833/199756818-d51db840-bd28-4947-913f-81995d416983.png"></center><br/>
 
 회원 엔티티는 이름, 근무 시작일, 근무 종료일, 주소 도시, 주소 번지, 주소 우편번호를 가진다.
 
 회원 엔티티가 가지는 속성중에 공통되는 부분을 추상화 하여 표현한다면 다음과 같이 표현 가능하다.
 
-(이미지)
+<center><img src="https://user-images.githubusercontent.com/36228833/199757076-d02c312c-1c2e-4ad2-a642-80f51e4e9a88.png"></center><br/>
 
 회원 엔티티는 이름, 근무기간, 집 주소를 가진다.
 
-(이미지)
+<center><img src="https://user-images.githubusercontent.com/36228833/199757189-1a73737c-f442-41f4-a5e4-f639efaffe5b.png"></center><br/>
 
 - 근무 시작일, 근무 종료일 -> 근무 기간(workPeriod)
 - 주소 도시, 주소 번지, 주소 우편번호 -> 집 주소(address)
@@ -107,11 +107,10 @@ JPA는 데이터 타입을 최상위 레벨로 봤을 때 엔티티 타입과 �
   - 값 타입을 정의하는 곳에 표시
 - `@Embedded`
   - 값 타입을 사용하는 곳에 표시
-- 임베디드 타입을 정의하는 클래스는 **기본 생성자가 필수로 있어야 한다.**
 
 #### 임베디드 타입과 테이블 매핑
 
-(이미지)
+<center><img src="https://user-images.githubusercontent.com/36228833/199757327-405caeec-2617-4365-9a25-696cf142458f.png"></center><br/>
 
 데이터베이스 입장에서는 임베디드 타입을 쓰든 안쓰든 어차피 값을 포함하고 있으니 바뀔 것이 없다.
 
@@ -172,7 +171,7 @@ entityManager.persist(member);
 
 #### 임베디드 타입과 연관관계
 
-(이미지)
+![image](https://user-images.githubusercontent.com/36228833/199757437-2b96b9c7-5e9e-4228-8aa8-3c61c8a27905.png)
 
 - Member 엔티티는 임베디드 타입으로 Address와 PhoneNumber를 가질 수 있다.
   - Address는 속성으로 임베디드 타입인 Zipcode를 가질 수 있다.
@@ -213,6 +212,7 @@ public class Member {
   private Address workAddress;
 }
 ```
+
 
 ### 컬렉션 값 타입(collection value type)
   - 자바가 제공하는 컬렉션(List, Set 등)에 기본값 타입 혹은 임베디드 타입을 넣어서 사용할 수 있다.
