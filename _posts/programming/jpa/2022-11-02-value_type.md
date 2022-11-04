@@ -32,6 +32,8 @@ JPA는 데이터 타입을 최상위 레벨로 봤을 때 엔티티 타입과 �
 
 ## 값 타입
 
+값 타입은 복잡한 객체 세상을 조금이라도 단순화 하고 만든 개념이다. 따라서 값 타입은 단순하고 안전하게 다룰 수 있어야 한다.
+
 값 타입은 크게 기본값 타입, 임베디드 타입, 컬렉션 값 타입으로 나눌 수 있다.
 
 ### 기본값 타입의 특징
@@ -119,6 +121,7 @@ JPA는 데이터 타입을 최상위 레벨로 봤을 때 엔티티 타입과 �
 ```java
 @Embeddable // 임베디드 값 타입을 정의
 @Getter
+@Setter
 @AllArgsConstructor
 public class Period {
    private LocalDateTime startDate;
@@ -127,6 +130,7 @@ public class Period {
 
 @Embeddable // 임베디드 값 타입을 정의
 @Getter
+@Setter
 @AllArgsConstructor
 public class Address {
    private String city;
@@ -213,6 +217,181 @@ public class Member {
 }
 ```
 
+### 값 타입 공유참조
+
+- 임베디드 타입 같은 값 타입을 **여러 엔티티에서 공유하면 위험하다.**
+- 부작용(side effect) 발생
+
+(이미지)
+
+회원1 엔티티와 회원2 엔티티가 둘다 city를 보고있을 때 city가 OldCity에서 NewCity로 변경 시 회원1과 회원2에 영향이 생긴다.(NewCity로 바뀜)
+
+```java
+@Embeddable
+@Getter
+@Setter
+@AllArgsConstructor
+public class Address {
+   private String city;
+   private String street;
+
+   @Column(name="ZIP_CODE")
+   private String zipcode;
+}
+
+@Entity
+public class Member {
+  @Id
+  @GeneratedValue
+  private Long id;
+
+  private String name;
+
+  @Embedded
+  private Address homeAddress;
+}
+
+...
+
+Address address = new Address("oldCity", "street", "12424");
+
+Member member = new Member();
+member.setName("member1");
+member.setHomeAddress(address);  // 동일한 임베디드 타입 사용
+em.persist(member);
+
+Member member2 = new Member();
+member2.setName("member2");
+member2.setHomeAddress(address); // 동일한 임베디드 타입 사용
+em.persist(member2);
+
+// 의도: 첫번쨰 member의 주소만 newCity로 바꿔야겠다!
+// side effect 발생) 그러나 두번째 member 또한 newCity로 바뀌게 된다.
+member.getHomeAddress().setCity("newCity");
+
+```
+
+이러한 side effect로 인하여 의도치않게 두번째 멤버 또한 값이 변경되게 된다.
+
+이런식으로 값 타입의 실제 인스턴스인 값을 공유하는것은 매우 위험하다.
+
+대신 값(인스턴스)를 복사해서 사용해야 한다!
+
+(이미지)
+
+```java
+...
+
+Address address = new Address("oldCity", "street", "12424");
+
+Member member = new Member();
+member.setName("member1");
+member.setHomeAddress(address);
+em.persist(member);
+
+// 동일한 임베디드 타입을 사용하지 않고 값을 복사하여 새로운 인스턴스를 생성한다.
+Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+
+Member member2 = new Member();
+member2.setName("member2");
+member2.setHomeAddress(copyAddress);  // 새로운 인스턴스
+em.persist(member2);
+
+// 의도대로 첫번쨰 member의 주소만 newCity로 바뀐다
+member.getHomeAddress().setCity("newCity");
+```
+
+그러나 만약 다음과 같이 기존 값을 그대로 사용하게 된다면?
+
+```java
+...
+
+Address address = new Address("oldCity", "street", "12424");
+
+Member member = new Member();
+member.setName("member1");
+member.setHomeAddress(address);
+em.persist(member);
+
+// 동일한 임베디드 타입을 사용하지 않고 값을 복사하여 새로운 인스턴스를 생성한다.
+Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+
+Member member2 = new Member();
+member2.setName("member2");
+member2.setHomeAddress(address); // 기존 인스턴스를 사용
+em.persist(member2);
+
+// side effect 발생
+member.getHomeAddress().setCity("newCity");
+```
+
+- 항상 값을 복사해서 사용하면 공유 참조로 인해 발생하는 부작용을 피할 수 있다.
+  - 그러나 값을 복사한 새로운 인스턴스를 만들었어도 누군가가 기존 인스턴스 객체를 사용하는것을 막을수가 없다. <br/>
+
+- 문제는 임베디드 타입처럼 직접 정의한 값 타입은 자바의 기본 타입(primitive type)이 아니라 객체 타입이다.
+  - 기본 타입은 값을 할당 시 (=) 무조건 기존값이 복사되어 넘어가게된다. (값을 공유하지 않는다.)
+    - 그렇기 때문에 절대 값이 같을 수 없다. <br/>
+      ```java
+      // 기본 타입 (primitive type)
+      int a = 10; 
+      int b = a; // 값을 복사
+      b = 4;
+      ```
+
+  - 그러나 객체 타입은 다르다. 
+    - 객체 타입은 참조 값을 직접 대입하는것을 막을 방법이 없다. <br/>
+      ```java
+      // 객체 타입
+      Address a = new Address("old");
+      Address b = a; // 참조를 전달
+      b.setCity("New") // side effect 발생 (a도 New로 바뀜)
+      ```
+ 
+#### 불변 객체
+
+객체 타입의 side effect를 막을 방법은 없는 걸까?
+
+객체 타입을 수정할 수 없게 만들면 된다. 즉 불변 객체(immutable)로 설계해야한다.
+- 불변객체 : 생성 시점 이후 절대 값을 변경할 수 없는 객체
+
+생성자(Constructor)로만 값을 설정하고 수정자(Setter)를 만들지 않으면 된다!
+- Integer, String은 자바가 제공하는 대표적인 불변 객체이다.
+
+```java
+@Embeddable
+@Getter
+//@Setter // Setter를 막아서 immutable 하게 설계한다.
+@AllArgsConstructor
+public class Address {
+   private String city;
+   private String street;
+
+   @Column(name="ZIP_CODE")
+   private String zipcode;
+}
+
+...
+
+Address address = new Address("oldCity", "street", "12424");
+
+Member member = new Member();
+member2.setName("member");
+member2.setHomeAddress(address);
+em.persist(member2);
+
+// 오류 발생 (setCity 사용 불가능)
+member.getHomeAddress().setCity("newCity");
+```
+
+결국 불변이라는 작은 제약(Setter 삭제)으로 부작용이라는 큰 재앙을 막을 수 있다!
+
+만약 값을 바꿔야할 상황이 온다면 다음과 같이 객체를 다시 생성하자.
+
+```java
+Address address = new Address("oldCity", "street", "12424");
+
+Address copyAddress = new Address("oldCity", address.getStreet(), address.getZipcode());
+```
 
 ### 컬렉션 값 타입(collection value type)
   - 자바가 제공하는 컬렉션(List, Set 등)에 기본값 타입 혹은 임베디드 타입을 넣어서 사용할 수 있다.
