@@ -3,7 +3,7 @@ title: "값 타입 (작성중)"
 categories: 
     - jpa
 date: 2022-11-02
-last_modified_at: 2022-11-02
+last_modified_at: 2022-11-05
 # tags:
 #     - 태그1
 #     - 태그2
@@ -217,12 +217,16 @@ public class Member {
 }
 ```
 
+### 컬렉션 값 타입(collection value type)
+  - 자바가 제공하는 컬렉션(List, Set 등)에 기본값 타입 혹은 임베디드 타입을 넣어서 사용할 수 있다.
+  - 예) `List<Position> positions`, `Set<Integer> numbers` 등
+
 ### 값 타입 공유참조
 
 - 임베디드 타입 같은 값 타입을 **여러 엔티티에서 공유하면 위험하다.**
 - 부작용(side effect) 발생
 
-(이미지)
+![image](https://user-images.githubusercontent.com/36228833/200013090-949d7fd9-06d4-48fc-bfa5-000bcc88f1ec.png)
 
 회원1 엔티티와 회원2 엔티티가 둘다 city를 보고있을 때 city가 OldCity에서 NewCity로 변경 시 회원1과 회원2에 영향이 생긴다.(NewCity로 바뀜)
 
@@ -277,7 +281,7 @@ member.getHomeAddress().setCity("newCity");
 
 대신 값(인스턴스)를 복사해서 사용해야 한다!
 
-(이미지)
+![image](https://user-images.githubusercontent.com/36228833/200013363-2ba577b2-305a-4624-a01e-83844db6ba5c.png)
 
 ```java
 ...
@@ -393,9 +397,114 @@ Address address = new Address("oldCity", "street", "12424");
 Address copyAddress = new Address("oldCity", address.getStreet(), address.getZipcode());
 ```
 
-### 컬렉션 값 타입(collection value type)
-  - 자바가 제공하는 컬렉션(List, Set 등)에 기본값 타입 혹은 임베디드 타입을 넣어서 사용할 수 있다.
-  - 예) `List<Position> positions`, `Set<Integer> numbers` 등
+### 값 타입의 비교
+
+값 타입을 어떻게 비교하는지 알아보자.
+
+값 타입은 **인스턴스가 달라도 그안에 값이 같으면 같은것**으로 봐야한다.
+
+우리가 흔히 아는 기본 타입(primitive type)의 경우 참조가 아닌 순수 값으로 비교하기 때문에 `==` 으로 비교하면 `true`가 나온다.
+
+```java
+int a = 10;
+int b = 10;
+
+System.out.println(a == b); // true
+```
+
+그렇다면 객체 타입의 비교는 어떨까?
+
+다음과 같이 객체끼리 비교할 때 `==` 으로 비교하면 객체간의 참조값이 서로 다르므로 당연히 `false`가 나온다.
+
+```java
+Address a = new Address("서울시");
+Address b = new Address("서울시");
+
+System.out.println(a == b); // false
+```
+
+그렇다면 객체 타입(인스턴스)의 비교는 어떻게 해야할까?
+
+비교 방식은 다음과 같이 2가지로 나뉜다.
+
+- 동일성(identity) 비교
+  - 인스턴스의 **참조 값을 비교**한다. `==`를 사용한다.
+
+- 동등성(equivalence) 비교
+  - 인스턴스의 **값을 비교**한다. `equals()`를 사용한다.
+
+그렇다면 **equals()**를 사용해서 객체간의 동등성 비교를 해보자.
+
+```java
+Address a = new Address("서울시");
+Address b = new Address("서울시");
+
+System.out.println(a.equals(b)); // false
+```
+
+`equals()`를 사용해도 false가 출력되는 것을 확인할 수 있다. 그 이유는 기본적으로 `equals()`는 `==`을 사용하여 비교하기 때문이다.
+
+`==`를 사용하여 비교하게 되면 단순히 **객체의 참조 값만을 비교하기 때문에** 값에 대한 비교를 할 수 없다. 
+
+그래서 `equals()`로 **객체 필드들의 모든 값을 비교하여 사용하기 위해** 재정의를 하여 사용할 필요가 있다.
+
+```java
+@Embeddable
+@Getter
+@AllArgsConstructor
+public class Address {
+   private String city;
+   private String street;
+
+   @Column(name="ZIP_CODE")
+   private String zipcode;
+
+   ...
+   
+
+   // equals 재정의 (만일 프록시가 들어가거나 복잡하게 구조가 짜여져 있는경우, 필드에 직접 접근이 아닌 getter로 불러와야 할 수 있다.)
+   @Override
+   public boolean equals(Object o){
+     if(this == o) return true;
+     if(o == null || getClass() != o.getClass()) return false;
+     Address address = (Address) o;
+     return Objects.equals(this.city, address.city) &&
+             Objects.equals(this.street, address.street) &&
+             Objects.equals(this.zipcode, address.zipcode);
+   }
+   
+   @Override
+   public int hashCode() {
+     return Objects.hash(this.city, this.street, this.zipcode);
+   }
+}
+
+...
+
+Address a = new Address("서울시", "강남구", "123123");
+Address b = new Address("서울시", "강남구", "123123");
+
+System.out.println(a.equals(b)); // true (equals 하나로 객체 내 모든 필드를 비교)
+```
+
+`equals()`를 재정의 할 때 `hashCode()`도 같이 재정의하여 구현하면 hash 값을 사용하는 Collection(HashMap, HashSet, HashTable)들을 사용할 때 동등객체 비교를 수월하게 할수 있다.
+
+hash 값을 사용하는 Collection에서 값을 비교할 때 **기본적으로 객체의 `hashCode()`로 인스턴스들을 비교**하게 되는데 `hashCode()`는 객체마다 랜덤으로 부여되기 때문에 논리적으로 비교하기 어렵다.
+
+(단, 기본 `hashCode()`는 인스턴스의 경우 주소 값을 기반으로 생성되고 String의 경우 문자열의 ascii 코드값으로 생성되기 때문에 상황에 따라 같을 수 있다.)
+
+그리고 최종적으로 **`equals()`와 `hashCode()` 두가지 경우 모두 `true`로 반환해야 같다고 보기 때문에** 둘다 재정의해서 사용하는 편이 좋다.
+
+
+```java
+HashMap<Integer, Address> hashMap = new HashMap<>();
+hashMap.put(1, new Address("서울시", "강남구", "123123"));
+hashMap.put(2, new Address("서울시", "강남구", "123123"));
+
+System.out.println(hashMap.get(1).equals(hashMap.get(2))); // false
+```
+
+
 
 ## 📣 Reference
 본 포스팅은 김영한님의 강의를 듣고 스스로 정리 및 추가한 내용입니다.
