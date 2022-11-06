@@ -141,6 +141,8 @@ public class Address {
 }
 
 @Entity
+@Getter
+@Setter
 public class Member {
    @Id
    @GeneratedValue
@@ -202,7 +204,11 @@ public class Member {
 ```java
 @Entity
 public class Member {
-  ...
+  @Id
+  @GeneratedValue
+  private Long id;
+  
+  private String name;
 
   @Embedded
   private Address homeAddress;
@@ -218,8 +224,106 @@ public class Member {
 ```
 
 ### 컬렉션 값 타입(collection value type)
-  - 자바가 제공하는 컬렉션(List, Set 등)에 기본값 타입 혹은 임베디드 타입을 넣어서 사용할 수 있다.
-  - 예) `List<Position> positions`, `Set<Integer> numbers` 등
+
+값 타입을 컬렉션에 담아서 사용하는 것을 의미한다. 예시를 통해 알아보자.
+
+![image](https://user-images.githubusercontent.com/36228833/200177014-f1a0cc38-4c6c-4b3c-acc7-d6631be7eec9.png)
+
+Member라는 엔티티는 id와 선호하는 음식들인 favoriteFoods, 주소 기록인 addressHistory로 구성된다.
+
+단순하게 값 타입이 단일인 경우에는 클래스 필드로 작성하고 사용하면 됐지만 컬렉션인 경우 얘기가 다르다.
+
+관계형 데이터베이스는 기본적으로 컬렉션을 내부에 담을수 없는 구조이기 때문이다.
+
+그래서 **컬렉션을 1:N 구조(컬렉션 : 내부 아이템들)로 하여 다음과 같이 별도의 테이블로 추출**하여 뽑아야 한다.
+
+![image](https://user-images.githubusercontent.com/36228833/200177032-2cccf89f-311b-4cd6-adf5-f84b59abbd31.png)
+
+테이블 구성 방식은 **원래 테이블의 PK + 나머지 필드로 PK를 만든 뒤 테이블로 추출**한다. 그 후 테이블 매핑 및 식별을 위해 원래 테이블의 PK를 FK로 잡는다.
+
+왜냐하면 기본적으로 컬렉션에 들어오는 값들은 값 타입이기 때문에 FAVORITE_FOOD_ID, ADDRESS_ID 와 같이 개별 식별자 PK를 가지게 되면 값 타입이 아닌 엔티티로 봐야하기 때문이다.
+
+값 타입 컬렉션은 `@ElementCollection`로 선언하고 `@CollectionTable`로 관계형 데이터베이스 내에서 매핑할 정보를 입력하여 사용한다.
+
+#### 값 타입 컬렉션 저장 예제
+
+```java
+@Embeddable
+@Getter
+@AllArgsConstructor
+public class Address {
+   private String city;
+   private String street;
+   private String zipcode;
+}
+
+@Entity
+@Getter
+@Setter
+public class Member {
+  @Id
+  @GeneratedValue
+  private Long id;
+
+  private String name;
+
+  @ElementCollection  // 값 타입 컬렉션인 경우 선언
+  @CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name="MEMBER_ID")) // 컬렉션 테이블명을 선언 및 FK 설정
+  @Column(name = "FOOD_NAME") // 컬렉션 내 값이 단일이며 기본값일 경우 값에 대한 컬럼명 정의가 가능하다.
+  private Set<String> favoriteFoods = new HashSet<>();
+
+  @ElementCollection  // 값 타입 컬렉션인 경우 선언
+  @CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name="MEMBER_ID")) // 컬렉션 테이블명을 선언 및 FK 설정
+  private List<Address> addressHistory = new ArrayList<>();
+}
+
+...
+
+Member member = new Member();
+member.setName("member1");
+
+member.getFavoriteFoods().add("치킨");
+member.getFavoriteFoods().add("피자");
+member.getFavoriteFoods().add("족발");
+
+member.getAddressHistory().add(new Address("city2", "street2", "2412"));
+member.getAddressHistory().add(new Address("city3", "street3", "2412"));
+
+em.persist(member);
+
+```
+
+위 예제를 실행하면 다음과 같이 테이블이 만들어진다.
+
+- **MEMBER**
+
+  |MEMBER_ID|NAME|
+  |---|---|---|---|---|
+  |1|member1|
+
+- **FAVORITE_FOOD**
+
+  |MEMBER_ID|FOOD_NAME|
+  |---|---|
+  |1|족발|
+  |1|피자|
+  |1|치킨|
+
+- **ADDRESS**
+
+  |MEMBER_ID|CITY|STREET|ZIPCODE|
+  |---|---|---|---|
+  |1|city2|street2|2412|
+  |1|city3|street3|2412|
+
+
+여기서 알수있는 흥미로운 사실은 **값 타입 컬렉션에 대한 persist를 따로 선언하지 않았음에도 영속화가 되어있다**는 점이다.
+
+그 이유는 값 타입 컬렉션 또한 **값 타입** 이며 때문에 MEMBER 엔티티의 하나의 필드로 인식하기 때문이다. (생명주기또한 엔티티에 의존한다.)
+
+덕분에 컬렉션을 수정할 때 따로 persist를 할 필요가 없으며 컬렉션 객체를 다루듯 사용하면 자동으로 update 된다.
+(즉, 값 타입 컬렉션에 영속성 전이 + 고아객체 제거 기능이 들어가 있다고 볼 수 있다.)
+
 
 ### 값 타입 공유참조
 
@@ -244,6 +348,8 @@ public class Address {
 }
 
 @Entity
+@Getter
+@Setter
 public class Member {
   @Id
   @GeneratedValue
