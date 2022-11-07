@@ -3,7 +3,7 @@ title: "값 타입"
 categories: 
     - jpa
 date: 2022-11-02
-last_modified_at: 2022-11-05
+last_modified_at: 2022-11-08
 # tags:
 #     - 태그1
 #     - 태그2
