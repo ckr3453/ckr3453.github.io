@@ -245,7 +245,7 @@ Member라는 엔티티는 id와 선호하는 음식들인 favoriteFoods, 주소 
 
 값 타입 컬렉션은 `@ElementCollection`로 선언하고 `@CollectionTable`로 관계형 데이터베이스 내에서 매핑할 정보를 입력하여 사용한다.
 
-#### 값 타입 컬렉션 저장 예제
+#### 저장 예제
 
 ```java
 @Embeddable
@@ -319,11 +319,174 @@ em.persist(member);
 
 여기서 알수있는 흥미로운 사실은 **값 타입 컬렉션에 대한 persist를 따로 선언하지 않았음에도 영속화가 되어있다**는 점이다.
 
-그 이유는 값 타입 컬렉션 또한 **값 타입** 이며 때문에 MEMBER 엔티티의 하나의 필드로 인식하기 때문이다. (생명주기또한 엔티티에 의존한다.)
+그 이유는 값 타입 컬렉션 또한 값 타입 이며 때문에 **MEMBER 엔티티의 하나의 필드로 인식하기 때문이다. (생명주기또한 엔티티에 의존한다.)**
 
-덕분에 컬렉션을 수정할 때 따로 persist를 할 필요가 없으며 컬렉션 객체를 다루듯 사용하면 자동으로 update 된다.
-(즉, 값 타입 컬렉션에 영속성 전이 + 고아객체 제거 기능이 들어가 있다고 볼 수 있다.)
+덕분에 컬렉션을 수정할 때 따로 persist를 할 필요가 없으며 컬렉션 객체를 다루듯 사용하면 자동으로 update 되어 반영된다.
+(마치 값 타입 컬렉션에 영속성 전이 + 고아객체 제거 기능을 활성화한 것과 같다.)
 
+#### 조회, 수정 예제
+
+```java
+@Embeddable
+@Getter
+@AllArgsConstructor
+public class Address {
+   private String city;
+   private String street;
+   private String zipcode;
+}
+
+@Entity
+@Getter
+@Setter
+@EqualsAndHashCode
+public class Member {
+  @Id
+  @GeneratedValue
+  private Long id;
+
+  private String name;
+
+  @ElementCollection
+  @CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name="MEMBER_ID"))
+  @Column(name = "FOOD_NAME")
+  private Set<String> favoriteFoods = new HashSet<>();
+
+  @ElementCollection
+  @CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name="MEMBER_ID"))
+  private List<Address> addressHistory = new ArrayList<>();
+}
+
+...
+
+Member member = new Member();
+member.setName("member1");
+
+member.getFavoriteFoods().add("치킨");
+member.getFavoriteFoods().add("피자");
+member.getFavoriteFoods().add("족발");
+
+member.getAddressHistory().add(new Address("old1", "street", "10000"));
+member.getAddressHistory().add(new Address("old2", "street3", "2412"));
+
+em.persist(member);
+
+em.flush();
+em.clear();
+
+// 지연 로딩으로 인해 member만 조회
+Member findMember = em.find(Member.class, member.getId());  
+List<Address> addressHistory = findMember.getAddressHistory();
+
+for(Address address : addressHistory){
+  // 지연 로딩으로 인해 이 시점에서 address 조회 쿼리 수행
+  System.out.println("address = " + address.getCity()); 
+}
+
+// 1. 치킨을 스시로 수정하기
+findMember.getFavoriteFoods().remove("치킨");
+findMember.getFavoriteFoods().add("스시");
+
+// 2. city가 old1인 아이템을 new로 수정하기
+findMember.getAddressHistory().remove(new Address("old1", "street", "10000"));
+findMember.getAddressHistory().add(new Address("new", "street", "10000"));
+```
+
+조회의 경우 기본적으로 값 타입 컬렉션은 지연로딩 전략을 사용한다.
+
+그렇기 때문에 조회 시 직접 아이템에 접근하는 시점에 쿼리를 수행한다.
+
+첫번째 수정의 경우 컬렉션에 해당하는 타입이 String 이기 때문에 update가 불가능하다. 직접 제거한 뒤 다시 넣어준다.
+
+두번째 수정의 경우 `equals()`와 `hashCode()`를 override 하여 동일한 값을 찾아내서 제거한다. 그 후 새로운 값을 넣어준다.
+(equals와 hashCode를 재정의 하지 않으면 객체 내 필드 값으로 비교하지 않기 때문에 위와 같이 remove 할 수 없다.)
+
+컬렉션 수정은 update를 수행하지 않고 **FK(MEMBER_ID)를 기준으로 전부 delete를 한뒤 컬렉션에 남아있는 아이템들을 다시 전부 insert 하는 쿼리를 수행**한다.
+
+그래서 2번째 수정의 경우 delete 쿼리 한번(전부 삭제), insert 쿼리 두번(기존 city인 old2, 새롭게 추가된 city인 new)을 수행한다.
+
+#### 값 타입 컬렉션의 제약사항 정리
+
+- 값 타입은 엔티티와 다르게 식별자 개념이 없다.
+  - `@Id` 같은 식별자가 없기 때문에 find 같은 메서드 사용이 불가능하다.
+  - 그래서 값을 변경하면 추적이 어렵다. <br/>
+- 값 타입 컬렉션에 변경 사항이 발생하면, **주인 엔티티와 연관된 모든 데이터를 삭제하고, 값 타입 컬렉션에 있는 현재 값을 모두 다시 저장한다.**
+  - 위에 수정 예제 참고
+  - `@OrderColumn`을 통해 컬렉션 순서에 대한 컬럼을 추가하면 update 쿼리를 수행하게 바꿀 수 있다.
+    - 그러나 컬렉션 중간에 아이템이 비는경우 null이 들어가는 등 이슈가 발생할 수 있기 때문에 권장하지 않는다.<br/>
+- 값 타입 컬렉션을 매핑하는 테이블은 **모든 컬럼을 묶어서 기본키를 구성**해야한다.
+  - 그래서 컬렉션 객체 속성은 null을 입력할 수 없고, 중복 저장이 불가능하다.
+
+
+#### 값 타입 컬렉션 대안
+
+실무에서는 상황에 따라 값 타입 컬렉션을 사용하는 **대신에 일대다 관계를 사용하는 것을 추천**한다.
+
+일대다 관계를 위한 엔티티를 만들고, 여기에서 값 타입을 매핑하여 사용한다. (값 타입을 엔티티로 승격시켜서 사용)
+
+영속성전이(Cascade) + 고아 객체 제거를 사용해서 값 타입 컬렉션 처럼 사용한다. 
+
+```java
+@Embeddable
+@Getter
+@AllArgsConstructor
+public class Address {
+   private String city;
+   private String street;
+   private String zipcode;
+}
+
+// 컬렉션 값 타입 대체를 위해 엔티티로 직접 구현
+@Entity
+@Table(name = "ADDRESS")
+public class AddressEntity {
+  @Id @GeneratedValue
+  private Long id;
+
+  private Address address;
+
+  public AddressEntity(String city, String street, String zipcode){
+    this.address = new Address(city, street, zipcode);
+  }
+}
+
+@Entity
+@Getter
+@Setter
+@EqualsAndHashCode
+public class Member {
+  @Id
+  @GeneratedValue
+  private Long id;
+
+  private String name;
+
+  // @ElementCollection
+  // @CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name="MEMBER_ID"))
+  // private List<Address> addressHistory = new ArrayList<>();
+
+  // 컬렉션 값 타입을 엔티티(1:N 구조)로 풀기
+  @OneToMany(Cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "MEMBER_ID")
+  private List<AddressEntity> addressHistory = new ArrayList<>();
+}
+
+...
+
+Member member = new Member();
+member.setName("member1");
+
+member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
+member.getAddressHistory().add(new AddressEntity("old2", "street3", "2412"));
+
+em.persist(member);
+```
+
+그렇다면 값 타입 컬렉션은 언제 사용하면 좋을까?
+
+위 예제의 `favoriteFoods`처럼 **update가 일어나지 않게 아이템들이 정해져있고 단순한 내용들을 다룰 때** 사용하면 좋다. 
+
+그러나 실제 실무에서는 값 타입 컬렉션을 사용할 상황이 많이 나오지 않는다.
 
 ### 값 타입 공유참조
 
@@ -610,7 +773,17 @@ hashMap.put(2, new Address("서울시", "강남구", "123123"));
 System.out.println(hashMap.get(1).equals(hashMap.get(2))); // false
 ```
 
+## 정리
 
+- 엔티티 타입
+  - `@Id` 같은 식별자가 존재한다.
+  - 생명 주기를 스스로 관리한다.
+  - 공유
+- 값 타입
+  - 식별자 X
+  - 생명 주기를 엔티티에 의존
+  - 공유하지 않는 것이 안전하다.(복사해서 사용하기)
+  - 불변 객체로 만드는 것이 안전하다.
 
 ## 📣 Reference
 본 포스팅은 김영한님의 강의를 듣고 스스로 정리 및 추가한 내용입니다.
