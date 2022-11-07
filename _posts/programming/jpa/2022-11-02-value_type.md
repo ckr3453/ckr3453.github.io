@@ -1,5 +1,5 @@
 ---
-title: "값 타입 (작성중)"
+title: "값 타입"
 categories: 
     - jpa
 date: 2022-11-02
