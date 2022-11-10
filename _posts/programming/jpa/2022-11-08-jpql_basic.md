@@ -18,9 +18,9 @@ excerpt: "객체지향 쿼리 언어의 기본 문법 및 쿼리 API"
 
 JPQL의 기본 문법에 대해서 알아보자.
 
-(이미지)
+![image](https://user-images.githubusercontent.com/36228833/201143241-4012ba40-424e-4120-a432-722d0c10c35b.png)
 
-(이미지)
+![image](https://user-images.githubusercontent.com/36228833/201143346-d27c4dbc-d47e-4b2f-b4a4-af73c5438f37.png)
 
 작성하는 방식은 기본적으로 ANSI SQL 표준 문법과 같으며 주의할 점은 **테이블이 아닌 엔티티 객체를 대상으로 쿼리문을 작성**해야 된다는 것이다.
 
