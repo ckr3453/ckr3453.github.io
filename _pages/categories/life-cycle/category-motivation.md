@@ -1,5 +1,5 @@
 ---
-title: "동기부여"
+title: "Motivation"
 permalink: /categories/motivation
 layout: archive
 sidebar_category: true
