@@ -18,3 +18,4 @@ group :jekyll_plugins do
 end
 
 gem 'eventmachine', '1.2.7', git: 'https://github.com/eventmachine/eventmachine', tag: 'v1.2.7'
+gem "webrick", "~> 1.7"
