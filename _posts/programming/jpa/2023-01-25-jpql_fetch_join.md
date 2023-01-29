@@ -1,9 +1,9 @@
 ---
-title: "객체지향 쿼리 언어 - 페치 조인(fetch join) 작성중"
+title: "객체지향 쿼리 언어 - 페치 조인(fetch join)"
 categories: 
     - jpa
 date: 2023-01-25
-last_modified_at: 2023-01-25
+last_modified_at: 2023-01-29
 toc: true
 toc_sticky: true
 excerpt: "객체지향 쿼리 언어의 페치 조인"
