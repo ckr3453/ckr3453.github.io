@@ -55,7 +55,7 @@ public class Job {
 그렇다면 생성자 대신 정적 팩토리 메서드를 사용했을 때 얻을 수 있는 장점과 단점에 대해 알아보자.
 
 ## 장점
-### 이름을 가질 수 있다.
+### 1. 이름을 가질 수 있다.
 생성자로 객체를 만드는 경우에는 생성자명은 필연적으로 해당 클래스명을 따라가게 되어있다. 때문에 생성자 자체 만으로는 반환될 객체의 특성을 제대로 설명할 수 없다.
 
 ```java
@@ -73,7 +73,7 @@ Job doctor = Job.newDoctor();
 Job developer = Job.newDeveloper();
 ```
 
-### 호출할 때마다 인스턴스를 새로 생성하지 않아도 된다.
+### 2. 호출할 때마다 인스턴스를 새로 생성하지 않아도 된다.
 정적 팩토리 메서드는 애플리케이션 시작부터 종료까지 메모리 `static` 영역에 메모리가 할당되어 있으므로 **인스턴스를 따로 생성할 필요가 없다.**
 
 또한 자주 사용되는 값을 미리 클래스 내부에 구현해놓고 인스턴스를 캐싱 - 재활용하여 사용할 수 있다.
@@ -115,7 +115,7 @@ public static BigInteger valueOf(long val) {
   - a == b 일때만 a.equals(b)가 성립한다.
   - 즉, a와 b의 주소값이 같을 때만 실제 값도 같을 수 있다.
 
-### 반환 타입의 하위 타입 객체를 반환할 수 있는 능력이 있다.
+### 3. 반환 타입의 하위 타입 객체를 반환할 수 있는 능력이 있다.
 
 생성자는 해당 클래스의 인스턴스만 만들 수 있다. <br/>
 
@@ -127,14 +127,17 @@ public class Teenager extends Age {
 }
 
 public class Adult extends Age {
-    public Teenager(){                                                                                      
+    public Adult(){                                                                                      
         super(32);
     }
 }
 ```
 
-하지만 정적 팩토리 메소드를 사용하면 하위 클래스의 인스턴스까지 만들어서 반환할 수 있다<br/>
-새로운 인터페이스와 수많은 구현 클래스가 있을 때, 구현 클래스의 생성자로 인스턴스를 만드는게 아니라 인터페이스의 정적 팩토리 메소드로 인스턴스를 만들어서 개발자가 **수많은 구현 클래스들을 이해하지 않고도 인터페이스를 사용할 수 있도록** 할 수 있다.
+하지만 정적 팩토리 메소드를 사용하면 하위 클래스의 인스턴스까지 만들어서 반환할 수 있다.<br/>
+
+새로운 인터페이스와 수많은 구현 클래스가 있을 때, 구현 클래스의 생성자로 인스턴스를 만드는게 아니라 인터페이스의 정적 팩토리 메소드로 인스턴스를 만들어서 <br/>
+
+개발자가 **수많은 구현 클래스들을 이해하지 않고도 인터페이스를 사용할 수 있도록** 할 수 있다.
 
 ```java
 public class Age {
@@ -147,7 +150,7 @@ public class Age {
 }
 ```
 
-### 입력 매개변수에 따라 매번 다른 클래스의 객체를 반환할 수 있다.
+### 4. 입력 매개변수에 따라 매번 다른 클래스의 객체를 반환할 수 있다.
 
 반환 타입의 하위 타입이기만 하면 어떤 클래스의 객체를 반환하든 상관없다.
 
@@ -172,24 +175,71 @@ public static <E extends Enum<E>> EnumSet<E> noneOf(Class<E> elementType) {
 
 > 클라이언트는 팩토리가 건네주는 객체가 어느 클래스의 인스턴스인지 알 수도 없고 알 필요도 없다. EnumSet의 하위 클래스이기만 하면 된다.
 
-### 정적 팩터리 메서드를 작성하는 시점에는 반환할 객체의 클래스가 존재하지 않아도 된다.
-생성자는 클래스가 존재해야 하지만 정적 팩토리 메서드를 작성할 때는 실제 반환될 클래스는 나중에 구현해도 된다.
+### 5. 정적 팩터리 메서드를 작성하는 시점에는 반환할 객체의 클래스가 존재하지 않아도 된다.
+생성자는 클래스가 존재해야 하지만 정적 팩토리 메서드를 작성할 때는 타입만 적고 실제 반환될 클래스는 나중에 구현해도 된다.
+
 
 ```java
-public static Class<?> forName(String className) throws ClassNotFoundException;
-public static 
+public static CardApp payment(String cardType){
+    if("국민".equals(cardType)){
+        return new KookminCardApp();
+    } else if("하나".equals(cardType)){
+        return new HanaCardApp();
+    } else if("신한".equals(cardType)){
+        CardApp shinhanApp = null;
+        try {
+            // 작성하는 시점에는 반환할 객체의 클래스가 존재하지 않아도 된다. (Java Reflection 활용)
+            Class<?> class = Class.forName("com.app.test.ShinhanApp")
+            Constructor<?> constructor = class.getConstructor();
+            shinhanApp = (CardApp) constructor.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return shinhanApp;
+    }
+
+    throw new IllegalArgumentException();
+}
 ```
 
 ## 단점
-### 상속을 하려면 public이나 protected 생성자가 필요하니 정적 팩터리 메서드만 제공하면 하위 클래스를 만들 수 없다.
+### 1. 상속을 하려면 public이나 protected 생성자가 필요하니 정적 팩터리 메서드만 제공하면 하위 클래스를 만들 수 없다.
+정적 팩토리 메서드"만" 사용하려면 기존 생성자를 private으로 막아야하고 그렇게 되면 상속을 받을수 없게 된다. 
 
-### 정적 팩터리 메서드는 프로그래머가 찾기 어렵다.
+### 2. 정적 팩터리 메서드는 프로그래머가 찾기 어렵다.
+생성자의 경우 기존 클래스명을 따라가고 또한 용도가 명확히 드러나기 때문에 사용하기 쉽다. 하지만 정적 팩터리 메서드의 경우 해당 클래스 내에 존재한다는 것을 작성하지 않으면 찾기 힘들다. 
 
+때문에 정적 팩토리 메서드명을 널리 알려진 규약에 따라 짓는 식으로 문제를 완화해야한다.
 
 ## 정적 팩터리 메서드 명명 방식들
+```java
+// from: 매개변수 하나를 받아서 해당 타입의 인스턴스를 반환하는 형변환 메서드
+Date d = Date.from(param);
+
+// of: 여러 매개변수를 받아 적합한 타입의 인스턴스를 반환하는 집계 메서드
+Set<Rank> faceCards = EnumSet.of(JACK, QUEEN, KING);
+
+// valueOf: from과 of의 더 자세한 버전
+BigInteger prime = BigInteger.valueOf(Integer.MAX_VALUE)
+
+// instance, getInstnce: 매개변수에 맞는 인스턴스를 반환하지만 같은 인스턴스임을 보장하지 않는다.
+StackWalker luke = StackWalker.getInstance(param);
+
+// create, newInstance: 매번 새로운 인스턴스를 생성해서 반환하는 것을 보장한다.
+Object newArray = Array.newInstance(classObject, arrayLen);
+
+// getType: getInstnce와 같으나 다른 클래스의 인스턴스를 반환 (getType에서 Type은 팩터리 메서드가 반환할 객체의 타입)
+FileStore fs = Files.getFileStore(path);
+
+// newType: newInstnce와 같으나 다른 클래스의 인스턴스를 반환 (newType에서 Type은 팩터리 메서드가 반환할 객체의 타입)
+BufferedReader br = Files.newBufferedReader(path);
+
+// type: getType, newType와 유사
+List<ParamType> list = Collections.list(param);
+```
 
 ## 정리
-> 정적 팩터리 메서드와 public 생성자는 각자의 쓰임새가 있으니 상댖거인 장단점을 이해하고 사용하는것이 좋다. 그렇다 하더라도 정적 팩터리를 사용하는게 유리한 경우가 더 많으므로 **무작정 public 생성자를 제공하던 습관이 있으면 고치자.**
+> 정적 팩터리 메서드와 public 생성자는 각자의 쓰임새가 있으니 상대적인 장/단점을 이해하고 사용하는것이 좋다. 그렇다 하더라도 정적 팩터리를 사용하는게 유리한 경우가 더 많으므로 **무작정 public 생성자를 제공하던 습관이 있으면 고치자.**
 
 ## 📣 Reference
 [Effective Java 3/E - Joshua J. Bloch](http://www.yes24.com/Product/Goods/65551284)<br/>
