@@ -83,25 +83,29 @@ Job developer = Job.newDeveloper();
 예시로 `java.math.BigInteger` 클래스의 `valueOf` 메소드를 살펴보자. 
 
 ```java
-public static BigInteger valueOf(long val) {
-
-    ....
+public class BigInteger extends Number implements Comparable<BigInteger> {
+    
     public static final BigInteger ZERO = new BigInteger(new int[0], 0);
     private final static int MAX_CONSTANT = 16;
     private static BigInteger posConst[] = new BigInteger[MAX_CONSTANT+1];
     private static BigInteger negConst[] = new BigInteger[MAX_CONSTANT+1];
-    ....
+    
+    ...
 
-    // 조건에 해당할 시 클래스 내부에 이미 구현된 값을 캐싱하여 return 한다.
-    if (val == 0)
-        return ZERO;
-    if (val > 0 && val <= MAX_CONSTANT)
-        return posConst[(int) val];
-    else if (val < 0 && val >= -MAX_CONSTANT)
-        return negConst[(int) -val];
+    public static BigInteger valueOf(long val) {
+        // 조건에 해당할 시 클래스 내부에 이미 구현된 값을 캐싱하여 return 한다.
+        if (val == 0)
+            return ZERO;
+        if (val > 0 && val <= MAX_CONSTANT)
+            return posConst[(int) val];
+        else if (val < 0 && val >= -MAX_CONSTANT)
+            return negConst[(int) -val];
 
-    // 조건에 해당하는게 없을 때 새롭게 객체 생성
-    return new BigInteger(val);
+        // 조건에 해당하는게 없을 때 새롭게 객체 생성
+        return new BigInteger(val);
+    }
+
+    ...
 }
 ```
 
