@@ -78,5 +78,5 @@ JWT는 다음과 같은 장점, 단점들을 가진다.
 - 토큰이 클라이언트에 저장되므로 서버에서 클라이언트의 토큰을 조작할 수 없다.
 
 ## 📣 Reference
-[JSON 웹 토큰](https://ko.wikipedia.org/wiki/JSON_%EC%9B%B9_%ED%86%A0%ED%81%B0)
+[JSON 웹 토큰](https://ko.wikipedia.org/wiki/JSON_%EC%9B%B9_%ED%86%A0%ED%81%B0)<br/>
 [jwt.io](https://jwt.io/)
