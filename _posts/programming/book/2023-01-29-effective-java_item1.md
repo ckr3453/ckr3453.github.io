@@ -243,4 +243,8 @@ List<ParamType> list = Collections.list(param);
 
 ## 📣 Reference
 [Effective Java 3/E - Joshua J. Bloch](http://www.yes24.com/Product/Goods/65551284)<br/>
-[effective-java-3e-source-code](https://github.com/WegraLee/effective-java-3e-source-code)
+[[이펙티브 자바 / 예제 코드 추가] 아이템 1. 생성자 대신 정적 팩토리 메소드를 고려해라.](https://jaeseongdev.github.io/development/2021/01/05/%EC%9D%B4%ED%8E%99%ED%8B%B0%EB%B8%8C_%EC%9E%90%EB%B0%94_%EC%95%84%EC%9D%B4%ED%85%9C_1/)<br/>
+[[Java 궁금증] Class.forName()은 어떻게 동작할까?](https://kyun2.tistory.com/23)<br/>
+[[Java] Class.forName()에 대해서](https://jongminlee0.github.io/2019/06/29/reflection/)<br/>
+[2-1) 생성자 대신 정적 팩토리 메소드를 고려하라.](https://nankisu.tistory.com/87)<br/>
+[자바 클래스 동적 로딩 - Java Class.forName newInstance, 이클립스(Eclipse)](https://carrotweb.tistory.com/53)<br/>
