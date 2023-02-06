@@ -142,8 +142,9 @@ map.entrySet().forEach(System.out::println);
 ## 📣 Reference
 
 [Effective Java 3/E - Joshua J. Bloch](http://www.yes24.com/Product/Goods/65551284)<br/>
-[WegraLee/effective-java-3e-source-code](https://github.com/WegraLee/effective-java-3e-source-code/tree/master/src/effectivejava/chapter2/item6)<br/>
-[Java String Pool](https://www.javastring.net/java/string/pool)<br/>
-[[JAVA] String = " " vs new String(" ") 의 차이](https://ict-nroo.tistory.com/18)<br/>
-[String Constant Pool이란? | Java String Pool](https://starkying.tistory.com/entry/what-is-java-string-pool)<br/>
-[Java Autoboxing 자동 변환 주의점](https://johngrib.github.io/wiki/use-java-primitive-type-for-performance/)<br/>
+[WegraLee/effective-java-3e-source-code](https://github.com/WegraLee/effective-java-3e-source-code/tree/master/src/effectivejava/chapter2/item7)<br/>
+[[이펙티브 자바] 아이템 7. 다 쓴 객체 참조를 해제하라](https://velog.io/@lychee/%EC%9D%B4%ED%8E%99%ED%8B%B0%EB%B8%8C-%EC%9E%90%EB%B0%94-%EC%95%84%EC%9D%B4%ED%85%9C-7.-%EB%8B%A4-%EC%93%B4-%EA%B0%9D%EC%B2%B4-%EC%B0%B8%EC%A1%B0%EB%A5%BC-%ED%95%B4%EC%A0%9C%ED%95%98%EB%9D%BC#-%EC%BD%9C%EB%B0%B1-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EB%88%84%EC%88%98%EC%9D%98-%EC%A3%BC%EB%B2%94)<br/>
+[이펙티브 자바 규칙 6 - 유효기간이 지난 객체는 폐기하자](https://meaownworld.tistory.com/77)<br/>
+[[Effective Java] 아이템7 - 다 쓴 객체 참조를 해제하라](https://mongsil1025.github.io/book/effective-java/item7/)<br/>
+[Weak reference의 이해](https://tourspace.tistory.com/37)<br/>
+[[Java] 참조 유형 (Strong Reference / Soft Reference / Weak Reference / Phantom Reference)](https://jangjjolkit.tistory.com/31)<br/>
