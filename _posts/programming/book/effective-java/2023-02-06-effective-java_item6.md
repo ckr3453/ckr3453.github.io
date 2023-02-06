@@ -77,7 +77,7 @@ public class RomanNumerals {
 
 하지만 내부적으로 정규표현식용 `Pattern` 인스턴스를 **한번만 쓰고 버리기 때문에** 반복해서 사용하기에는 적합하지 않다.
 
-> `Pattern`은 입력받은 정규표현식에 해당하는 유한 상태 머신(finite state machine)을 만들기 때문에 인스턴스 생성 비용이 높다.
+> `Pattern`은 입력받은 정규표현식에 해당하는 유한 상태 머신(finite state machine)을 만들기 때문에 인스턴스 생성 비용이 높다. (유한상태머신 -> 유한개의 상태를 정의하고, 조건에 맞는 이벤트가 발생되면 해당 상태로 변경되는 방식으로 동작하는 것)
 
 `java.lang.String`<br/>
 <center><img src="https://user-images.githubusercontent.com/36228833/216928501-8e0944e1-2816-4c39-9ed2-70fc3941f224.png"></center><br/>
