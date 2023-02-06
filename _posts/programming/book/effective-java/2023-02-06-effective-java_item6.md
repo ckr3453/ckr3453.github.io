@@ -15,7 +15,7 @@ excerpt: "기존 객체를 재활용해야 한다면 새로운 객체를 만들�
 
 객체를 매번 생성하는 경우와 재사용 하는 경우를 각 예시 별 차이점을 알아보자.
 
-## String 예시
+## 문자열 생성
 
 String 인스턴스 생성 과정을 살펴보자.
 
@@ -60,7 +60,7 @@ System.out.println("String literal 시간소요(ms) : "+secDiffTime);
 
 `new` 연산자보다 String literal 로 생성한 경우가 압도적으로 빠른것을 확인할 수 있다.
 
-## 정규표현식 예시
+## 생성비용이 비싼 객체
 
 다음은 정규표현식을 사용하는 경우다.
 
@@ -75,7 +75,9 @@ public class RomanNumerals {
 
 `String.matches` 는 정규표현식으로 문자열 형태를 확인하는 간결한 방법이다. 
 
-하지만 내부적으로 정규표현식용 `Pattern` 인스턴스를 **한번만 쓰고 버리기 때문에** 반복해서 사용하기에는 적합하지 않다. 
+하지만 내부적으로 정규표현식용 `Pattern` 인스턴스를 **한번만 쓰고 버리기 때문에** 반복해서 사용하기에는 적합하지 않다.
+
+> `Pattern`은 입력받은 정규표현식에 해당하는 유한 상태 머신(finite state machine)을 만들기 때문에 인스턴스 생성 비용이 높다.
 
 `java.lang.String`<br/>
 <center><img src="https://user-images.githubusercontent.com/36228833/216928501-8e0944e1-2816-4c39-9ed2-70fc3941f224.png"></center><br/>
@@ -124,7 +126,7 @@ System.out.println("정규표현식 개선후 시간소요(ms) : "+secDiffTime);
 
 캐싱을 활용하여 개선한 쪽이 훨씬 빠르다.
 
-## 오토박싱 (Auto Boxing) 예시
+## 오토박싱 (Auto Boxing)
 
 마지막으로 오토박싱을 예로 들수있다.
 
@@ -171,6 +173,14 @@ System.out.println("개선 후 시간소요(ms) : "+secDiffTime);
 <center><img src="https://user-images.githubusercontent.com/36228833/216928782-f139e594-0f70-4415-99e9-7f7f8754d2f3.png"></center><br/>
 
 박싱된 기본 타입보다는 기본 타입(primitive)을 사용하고, **의도치 않은 오토박싱이 숨어들지 않도록 신경쓰자.**
+
+## 유의할점
+
+- 이번 주제를 "객체 생성은 비싸니 피해야 한다"로 오해하면 안된다. 
+- 오히려 **프로그램의 명확성, 간결성, 기능을 위해** 객체를 추가 생성 하는것이라면 일반적으로 좋은 일이다.
+- 아주 무거운 객체가 아닌이상 단순히 객체 생성을 피하기 위해 객체 풀(pool)을 따로 만들지는 말자.
+  - 자체 객체 풀은 코드를 헷갈리게 하고 메모리 사용량을 늘리며 성능을 떨어뜨릴 확률이 있다.
+  - JVM의 가비지 컬렉터가 이미 최적화가 잘 되있어서 가벼운 객체는 직접만든 객체 풀(pool)보다 훨씬 빠르다.
 
 ## 📣 Reference
 
