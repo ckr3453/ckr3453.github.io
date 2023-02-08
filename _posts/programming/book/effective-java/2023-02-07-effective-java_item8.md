@@ -281,7 +281,7 @@ public class Test implements AutoCloseable {
 
 ## cleaner 예제
 
-cleaner를 직접 구현한 예시를 살펴보자.
+`cleaner`를 직접 구현한 예시를 살펴보자.
 
 ```java
 public class CleanerExample implements AutoCloseable {
