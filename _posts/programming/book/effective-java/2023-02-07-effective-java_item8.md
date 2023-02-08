@@ -1,5 +1,5 @@
 ---
-title: "이펙티브자바 - 아이템8) finalizer와 cleaner 사용을 피하라.(작성중)"
+title: "이펙티브자바 - 아이템8) finalizer와 cleaner 사용을 피하라."
 categories: 
     - book
 date: 2023-02-06
