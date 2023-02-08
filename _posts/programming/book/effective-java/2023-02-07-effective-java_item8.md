@@ -81,9 +81,10 @@ public class Main {
 ## 성능 문제
 
 `AutoCloseable` 객체를 생성하고 `try-with-resource`로 자원 반납까지 걸린시간 : 12ns
+
 `finalize()`를 구현한 객체가 자원 반납까지 걸린시간 : 550ns
 
-속도가 무려 50배 정도 차이난다. (`cleaner`도 클래스의 모든 인스턴스를 수거하는 형태이므로 'finalizer'와 비슷한 성능을 낸다.)
+속도가 무려 50배 정도 차이난다. (`cleaner`도 클래스의 모든 인스턴스를 수거하는 형태이므로 `finalizer`와 비슷한 성능을 낸다.)
 
 ## 보안 문제 (`finalizer` 공격)
 
@@ -181,7 +182,7 @@ public class Dashboard {
 
 ## 자원 반납을 위해 `AutoCloseable`을 사용하자 (권장)
 
-앞서 설명한 'finalizer', 'cleaner' 대신 파일이나 스레드 등 자원 반납을 위해 'AutoCloseable'을 사용하자.
+앞서 설명한 `finalizer`, `cleaner` 대신 파일이나 스레드 등 자원 반납을 위해 `AutoCloseable`을 사용하자.
 
 자원 반납이 필요한 클래스에 `AutoCloseable` 인터페이스를 구현하고 `close()`를 명시적으로 호출하면 된다. 
 
