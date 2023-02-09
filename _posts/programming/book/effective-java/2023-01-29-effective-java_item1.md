@@ -76,37 +76,17 @@ Job developer = Job.newDeveloper();
 ### 2. 호출할 때마다 인스턴스를 새로 생성하지 않아도 된다.
 정적 팩토리 메서드는 애플리케이션 시작부터 종료까지 메모리 `static` 영역에 메모리가 할당되어 있으므로 **인스턴스를 따로 생성할 필요가 없다.**
 
-또한 자주 사용되는 값을 미리 클래스 내부에 구현해놓고 인스턴스를 캐싱 - 재활용하여 사용할 수 있다.
-
 생성 비용이 큰 객체가 자주 요청되는 상황이라면 이같은 방식은 성능 향상에 큰 효과를 누릴 수 있다.
 
-예시로 `java.math.BigInteger` 클래스의 `valueOf` 메소드를 살펴보자. 
+```java
+public static Boolean valueOf(boolean b){
+    return b ? Boolean.TRUE : Boolean.FALSE;
+}
+```
 
 ```java
-public class BigInteger extends Number implements Comparable<BigInteger> {
-    
-    public static final BigInteger ZERO = new BigInteger(new int[0], 0);
-    private final static int MAX_CONSTANT = 16;
-    private static BigInteger posConst[] = new BigInteger[MAX_CONSTANT+1];
-    private static BigInteger negConst[] = new BigInteger[MAX_CONSTANT+1];
-    
-    ...
-
-    public static BigInteger valueOf(long val) {
-        // 조건에 해당할 시 클래스 내부에 이미 구현된 값을 캐싱하여 return 한다.
-        if (val == 0)
-            return ZERO;
-        if (val > 0 && val <= MAX_CONSTANT)
-            return posConst[(int) val];
-        else if (val < 0 && val >= -MAX_CONSTANT)
-            return negConst[(int) -val];
-
-        // 조건에 해당하는게 없을 때 새롭게 객체 생성
-        return new BigInteger(val);
-    }
-
-    ...
-}
+Boolean bool = new Boolean(true);       // 매번 생성할 필요 X
+Boolean bool = Boolean.valueOf(true);   // O
 ```
 
 이와 같이 반복되는 요청에 같은 객체를 반환하는 식으로 인스턴스를 철저히 통제하는 클래스를 **인스턴스 통제(instance-controlled)** 클래스라고 한다.
@@ -121,37 +101,17 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
 
 ### 3. 반환 타입의 하위 타입 객체를 반환할 수 있는 능력이 있다.
 
-생성자는 해당 클래스의 인스턴스만 만들 수 있다. <br/>
-
-```java
-public class Teenager extends Age {
-    public Teenager(){
-        super(15);
-    }
-}
-
-public class Adult extends Age {
-    public Adult(){                                                                                      
-        super(32);
-    }
-}
-```
-
-하지만 정적 팩토리 메소드를 사용하면 하위 클래스의 인스턴스까지 만들어서 반환할 수 있다.<br/>
+정적 팩토리 메소드를 사용하면 하위 클래스의 인스턴스를 반환할 수 있다.<br/>
 
 새로운 인터페이스와 수많은 구현 클래스가 있을 때, 구현 클래스의 생성자로 인스턴스를 만드는게 아니라 인터페이스의 정적 팩토리 메소드로 인스턴스를 만들어서 <br/>
 
 개발자가 **수많은 구현 클래스들을 이해하지 않고도 인터페이스를 사용할 수 있도록** 할 수 있다.
 
 ```java
-public class Age {
-  public static Age of(int age) {
-	if(age < 20)
-	  return new Teenager();
-	else 
-	  return new Adult();
-  }
-}
+// Collections를 통해서 list, map, set 객체 생성이 가능함.
+List<String> list = Collections.singletonList("list");
+Map<Object, Object> map = Collections.emptyMap();
+Set<Object> set = Collections.emptySet();
 ```
 
 ### 4. 입력 매개변수에 따라 매번 다른 클래스의 객체를 반환할 수 있다.
@@ -165,6 +125,7 @@ public class Age {
 예시로 `java.util.EnumSet` 클래스의 `noneOf` 메소드를 살펴보자.
 
 ```java
+// 지정한 elementType을 사용하여 빈 enumSet을 만듭니다.
 public static <E extends Enum<E>> EnumSet<E> noneOf(Class<E> elementType) {
     Enum<?>[] universe = getUniverse(elementType);
     if (universe == null)
@@ -177,11 +138,20 @@ public static <E extends Enum<E>> EnumSet<E> noneOf(Class<E> elementType) {
 }
 ```
 
-> 클라이언트는 팩토리가 건네주는 객체가 어느 클래스의 인스턴스인지 알 수도 없고 알 필요도 없다. EnumSet의 하위 클래스이기만 하면 된다.
+```java
+public enum RAINBOW {
+    RED, ORANGE, YELLOW, GREEN, BLUE
+}
+```
+
+```java
+EnumSet<RAINBOW> = EnumSet.noneOf(RAINBOW.class);
+```
+
+> 클라이언트는 팩토리가 건네주는 객체가 어느 클래스의 인스턴스인지 알 수도 없고 알 필요도 없다. 해당 코드에서는 EnumSet의 하위 클래스이기만 하면 된다.
 
 ### 5. 정적 팩터리 메서드를 작성하는 시점에는 반환할 객체의 클래스가 존재하지 않아도 된다.
 생성자는 클래스가 존재해야 하지만 정적 팩토리 메서드를 작성할 때는 타입만 적고 실제 반환될 클래스는 나중에 구현해도 된다.
-
 
 ```java
 public static CardApp payment(String cardType){
