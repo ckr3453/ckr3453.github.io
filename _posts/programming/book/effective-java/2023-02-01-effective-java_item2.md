@@ -197,7 +197,6 @@ public abstract class Pizza {
 
         abstract Pizza build();
 
-        // 시뮬레이트한 셀프 타입(simulated self-type) 관용구인 self()를 활용한다.
         // 하위 클래스는 이 메서드를 재정의(overriding)하여 "this"를 반환하도록 해야 한다.
         protected abstract T self();
     }
