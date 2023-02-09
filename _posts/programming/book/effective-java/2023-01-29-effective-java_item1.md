@@ -131,7 +131,7 @@ public static <E extends Enum<E>> EnumSet<E> noneOf(Class<E> elementType) {
     if (universe == null)
         throw new ClassCastException(elementType + " not an enum");
 
-    if (universe.length <= 64)
+    if (universe.length <= 64) // enum 요소의 길이
         return new RegularEnumSet<>(elementType, universe); // long 변수 하나로 관리 하는 RegularEnumSet
     else 
         return new JumboEnumSet<>(elementType, universe); // long 배열로 관리하는 JumboEnumSet
@@ -145,7 +145,8 @@ public enum RAINBOW {
 ```
 
 ```java
-EnumSet<RAINBOW> = EnumSet.noneOf(RAINBOW.class);
+// enum 요소 길이가 5 이므로 EnumSet의 하위 타입인 RegularEnumSet을 사용
+EnumSet<RAINBOW> rainbowSet= EnumSet.noneOf(RAINBOW.class);
 ```
 
 > 클라이언트는 팩토리가 건네주는 객체가 어느 클래스의 인스턴스인지 알 수도 없고 알 필요도 없다. 해당 코드에서는 EnumSet의 하위 클래스이기만 하면 된다.
