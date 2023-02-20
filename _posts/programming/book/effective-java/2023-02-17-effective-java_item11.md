@@ -6,7 +6,7 @@ date: 2023-02-17
 last_modified_at: 2023-02-19
 toc: true
 toc_sticky: true
-excerpt: "hashCode를 재정의 하자."
+excerpt: "equals를 재정의할때는 항상 hashCode도 재정의 하자."
 ---
 
 ## 개요
