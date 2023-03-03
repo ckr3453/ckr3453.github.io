@@ -1,9 +1,9 @@
 ---
-title: "이펙티브자바 - 아이템12) clone 재정의는 주의해서 진행하라. (작성중)"
+title: "이펙티브자바 - 아이템13) clone 재정의는 주의해서 진행하라."
 categories: 
     - book
 date: 2023-03-01
-last_modified_at: 2023-03-02
+last_modified_at: 2023-03-03
 toc: true
 toc_sticky: true
 excerpt: "clone()을 재정의할때 고려 사항"
@@ -91,7 +91,7 @@ System.out.println("clone = " + clone);
 
 > 공변 반환 타입(covariant return type)이란? 재정의한 메서드의 반환타입은 상위 클래스의 메서드가 반환하는 타입의 하위 타입일 수 있다.
 
-** 단, `final`로 선언된 클래스라면 하위 클래스를 가질수 없기때문에 이러한 문제를 고민하지 않아도 된다. **
+* 단, `final`로 선언된 클래스라면 하위 클래스를 가질수 없기때문에 이러한 문제를 고민하지 않아도 된다.
 
 ```java
 public class Test implements Cloneable {
@@ -147,7 +147,7 @@ public TestA clone() {
 
 그러나 가변 상태 객체가 존재하는 경우 다음과 같은 문제가 발생한다.
 
-> 가변 상태 객체란 인스턴스 생성 이후에도 내부 상태 변경이 가능한 객체를 뜻한다. (Array, List, Set 등)
+> 가변 상태 객체란 인스턴스 생성 이후에도 내부 상태 변경이 가능한 객체를 뜻한다.
 
 다음은 자료구조중 하나인 `Stack`을 구현한 클래스 예시이다.
 
@@ -233,7 +233,7 @@ public Stack clone() {
 }
 ```
 
-단, 이와 같은 방법은 가변 객체가 `final`로 선언되어 있으면 새로운 값을 할당할 수 없기 때문에 불가능하다.
+* 단, 이와 같은 방법은 가변 객체가 `final`로 선언되어 있으면 새로운 값을 할당할 수 없기 때문에 불가능하다.
 
 <center><img src="https://user-images.githubusercontent.com/36228833/222418878-85bacad3-a1df-45ac-9ad6-b90b7c394dd8.png"></center><br/>
 
@@ -363,8 +363,11 @@ private boolean hasTests() {
 말그대로 자신과 같은 클래스의 인스턴스를 매개변수로 받는 생성자를 말한다.
 
 ```java
-public Test(Test test) {
-    //....
+public TestC(TestC testc) {
+    this.id = testc.id;
+    this.tests = Arrays.stream(testc.getTests())
+                        .map(org -> new TestC(org.id, org.getTests()))
+                        .toArray(TestC[]::new);
 }
 ```
 
@@ -373,8 +376,8 @@ public Test(Test test) {
 복사 팩터리는 복사 생성자를 모방한 정적 팩터리 구현 방식이다. (아이템1 참고)
 
 ```java
-public static Test newInstance(Test test){
-    // ...
+public static TestC newInstance(TestC testC){
+    return new TestC(testC);
 }
 ```
 
