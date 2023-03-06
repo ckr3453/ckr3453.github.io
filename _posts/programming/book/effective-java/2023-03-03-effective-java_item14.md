@@ -26,7 +26,7 @@ excerpt: "Comparable 인터페이스를 구현할 때 고려사항"
 
 ## compareTo() 일반 규약
 
-`compareTo()`의 일반규약은 아이템 10에서 언급한 `equals`의 일반규약과 동일하게 대칭성, 추이성, 반사성을 충족해야한다.
+`compareTo()`의 일반규약은 [아이템10에서 언급한 `equals`의 일반규약](https://ckr3453.github.io/book/effective-java_item10/#%EC%A7%80%EC%BC%9C%EC%95%BC%ED%95%A0-5%EA%B0%80%EC%A7%80-%EC%9D%BC%EB%B0%98-%EA%B7%9C%EC%95%BD%EB%93%A4)과 동일하게 대칭성, 추이성, 반사성을 충족해야한다.
 
 - 이 객체와 주어진 객체의 순서를 비교한다.
   - 이 객체가 주어진 객체보다 작으면 음수, 같으면 0, 크면 양수를 반환한다.
