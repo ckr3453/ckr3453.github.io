@@ -373,7 +373,7 @@ public TestC(TestC testc) {
 
 ### 복사 팩터리
 
-복사 팩터리는 복사 생성자를 모방한 정적 팩터리 구현 방식이다. (아이템1 참고)
+복사 팩터리는 복사 생성자를 모방한 정적 팩터리 구현 방식이다. ([아이템1](https://ckr3453.github.io/book/effective-java_item1/))
 
 ```java
 public static TestC newInstance(TestC testC){
