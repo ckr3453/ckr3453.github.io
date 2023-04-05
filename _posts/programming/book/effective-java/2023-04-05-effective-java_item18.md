@@ -194,6 +194,12 @@ public class InstrumentedSet<E> extends ForwardingSet<E> {
 
 다른 `Set`에 계측 기능을 덧씌운다는 의미로 **데코레이터 패턴**이라고도 한다.
 
+컴포지션의 장점을 정리하면 다음과 같다.
+
+- 새로운(전달) 클래스는 기존 클래스의 내부 구현 방식의 영향에서 벗어나며, 기존 클래스에 새로운 메서드가 추가되더라도 전혀 영향을 받지 않는다.
+- 메서드를 호출하는 방식으로 동작하기 때문에 캡슐화를 깨뜨리지 않는다.
+- 상위 클래스에 의존하지 않기 때문에 변화에 유연하다.
+
 ## 정리
 
 - 상속은 캡슐화를 깨뜨리므로 취약점을 피하기 위해 컴포지션을 사용하자.
@@ -207,3 +213,4 @@ public class InstrumentedSet<E> extends ForwardingSet<E> {
 
 [Effective Java 3/E - Joshua J. Bloch](http://www.yes24.com/Product/Goods/65551284)<br/>
 [WegraLee/effective-java-3e-source-code](https://github.com/WegraLee/effective-java-3e-source-code/tree/master/src/effectivejava/chapter4/item18)<br/>
+[[10분 테코톡] ⛰ 로키의 상속보다는 Composition](https://www.youtube.com/watch?v=clbpnp2xYOQ)<br/>
