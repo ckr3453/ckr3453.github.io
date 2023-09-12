@@ -97,7 +97,7 @@ analytics:
 author:
   name             : "CKR"  # 이름 영역입니다.
   avatar           : "/assets/images/profile.jpg" # 프로필 사진 경로입니다. # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "3년차 Java Backend 개발자입니다 😀" # 프로필 사진 밑에 자기소개 영역. 줄바꿈은 <br>로 굵은 글씨는 **글씨** 로 표기해주세요. 
+  bio              : "4년차 Java Backend 개발자입니다 😀" # 프로필 사진 밑에 자기소개 영역. 줄바꿈은 <br>로 굵은 글씨는 **글씨** 로 표기해주세요. 
   location         : "Gyeonggi-do, Suwon"
   email            : "david3453@naver.com"
   links:
