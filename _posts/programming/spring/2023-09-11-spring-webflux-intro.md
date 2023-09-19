@@ -60,14 +60,16 @@ Reactive Streams API를 지원하여 Reactive 스타일의 어플리케이션 �
 
 ## 그렇다면 무조건 Spring Webflux가 더 좋은가?
 
-<center><img src="https://github.com/ckr3453/ckr3453.github.io/assets/36228833/b4f2cda2-ade4-4535-b2b4-c67815fec124"></center><br/>
-(자바 기반의 스프링 Web MVC 와 WebFlux 성능 분석 논문 - 동시접속자 수에 따른 응답시간 비교 결과)
+<center><img src="https://github.com/ckr3453/ckr3453.github.io/assets/36228833/b4f2cda2-ade4-4535-b2b4-c67815fec124">
+</center><br/>
+
 
 구축하는 서비스가 다량의 동시접속자를 대응해야 한다면 Spring Webflux를 사용하는 것이 좋다. 
 
 또한 요청을 처리하는 파이프라인의 구성요소들이 전부 Non-blocking 하게 동작해야 최상의 성능을 이끌어낼 수 있다.
 
-(특정한 구간에서 Blocking이 발생하는 경우, thread block 이 발생하며 이는 곧 성능 저하로 직결된다. -> 보통 Webflux 환경에서는 Spring MVC 환경보다 상대적으로 더 적은 스레드를 운용하므로 치명적)
+특정한 구간에서 Blocking이 발생하는 경우, thread block 이 발생하며 이는 곧 성능 저하로 직결된다.<br/>
+(보통 Webflux 환경에서는 Spring MVC 환경보다 상대적으로 더 적은 스레드(core * 2)를 운용하므로 치명적)
 
 그렇지 않은경우 Spring MVC를 사용하는 것이 코드작성, 디버깅 등 생산성 면에서 훨씬 좋다. 
 
