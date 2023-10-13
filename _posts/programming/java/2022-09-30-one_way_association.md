@@ -1,7 +1,7 @@
 ---
-title: "연관관계 매핑 - 단방향 연관관계"
+title: "JPA) 연관관계 매핑 - 단방향 연관관계"
 categories: 
-    - jpa
+    - java
 date: 2022-09-30
 last_modified_at: 2022-09-30
 # tags:

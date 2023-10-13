@@ -1,7 +1,7 @@
 ---
-title: "객체지향 쿼리 언어 - 프로젝션(SELECT)"
+title: "JPA) 객체지향 쿼리 언어 - 프로젝션(SELECT)"
 categories: 
-    - jpa
+    - java
 date: 2023-01-17
 last_modified_at: 2023-01-17
 toc: true

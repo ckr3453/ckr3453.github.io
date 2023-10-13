@@ -1,7 +1,7 @@
 ---
-title: "고급 연관관계 매핑 - 상속관계 매핑"
+title: "JPA) 고급 연관관계 매핑 - 상속관계 매핑"
 categories: 
-    - jpa
+    - java
 date: 2022-10-17
 last_modified_at: 2022-10-19
 # tags:

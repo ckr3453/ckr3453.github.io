@@ -1,7 +1,7 @@
 ---
-title: "연관관계 관리 - 영속성 전이(cascade)와 고아객체(orphan)"
+title: "JPA) 연관관계 관리 - 영속성 전이(cascade)와 고아객체(orphan)"
 categories: 
-    - jpa
+    - java
 date: 2022-10-31
 last_modified_at: 2022-10-31
 # tags:

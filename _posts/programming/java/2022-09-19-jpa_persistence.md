@@ -1,7 +1,7 @@
 ---
-title: "JPA 내부구조 - 영속성 컨텍스트"
+title: "JPA) 내부구조 - 영속성 컨텍스트"
 categories: 
-    - jpa
+    - java
 date: 2022-09-19
 last_modified_at: 2022-09-19
 # tags:

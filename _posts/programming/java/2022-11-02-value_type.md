@@ -1,7 +1,7 @@
 ---
-title: "값 타입"
+title: "JPA) 값 타입"
 categories: 
-    - jpa
+    - java
 date: 2022-11-02
 last_modified_at: 2022-11-08
 # tags:

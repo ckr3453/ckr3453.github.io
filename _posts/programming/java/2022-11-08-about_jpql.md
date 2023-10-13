@@ -1,7 +1,7 @@
 ---
-title: "객체지향 쿼리 언어 - 개요"
+title: "JPA) 객체지향 쿼리 언어 - 개요"
 categories: 
-    - jpa
+    - java
 date: 2022-11-08
 last_modified_at: 2022-11-10
 # tags:

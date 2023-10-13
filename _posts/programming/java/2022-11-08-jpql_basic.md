@@ -1,7 +1,7 @@
 ---
-title: "객체지향 쿼리 언어 - 기본문법과 쿼리 API"
+title: "JPA) 객체지향 쿼리 언어 - 기본문법과 쿼리 API"
 categories: 
-    - jpa
+    - java
 date: 2022-11-11
 last_modified_at: 2022-11-11
 # tags:

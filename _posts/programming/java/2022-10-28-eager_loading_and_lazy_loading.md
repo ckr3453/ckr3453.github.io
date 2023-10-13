@@ -1,7 +1,7 @@
 ---
-title: "연관관계 관리 - 즉시 로딩과 지연 로딩"
+title: "JPA) 연관관계 관리 - 즉시 로딩과 지연 로딩"
 categories: 
-    - jpa
+    - java
 date: 2022-10-28
 last_modified_at: 2022-10-28
 # tags:

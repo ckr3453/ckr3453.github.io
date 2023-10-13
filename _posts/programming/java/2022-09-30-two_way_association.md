@@ -1,7 +1,7 @@
 ---
-title: "연관관계 매핑 - 양방향 연관관계와 연관관계의 주인"
+title: "JPA) 연관관계 매핑 - 양방향 연관관계와 연관관계의 주인"
 categories: 
-    - jpa
+    - java
 date: 2022-09-30
 last_modified_at: 2022-10-04
 # tags:

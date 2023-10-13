@@ -1,7 +1,7 @@
 ---
-title: "고급 연관관계 매핑 - @MappedSuperclass"
+title: "JPA) 고급 연관관계 매핑 - @MappedSuperclass"
 categories: 
-    - jpa
+    - java
 date: 2022-10-24
 last_modified_at: 2022-10-24
 # tags:

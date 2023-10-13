@@ -1,7 +1,7 @@
 ---
-title: "필드와 컬럼 매핑"
+title: "JPA) 필드와 컬럼 매핑"
 categories: 
-    - jpa
+    - java
 date: 2022-09-28
 last_modified_at: 2022-09-29
 # tags:

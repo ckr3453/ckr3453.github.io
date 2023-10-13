@@ -1,7 +1,7 @@
 ---
-title: "객체와 테이블 매핑"
+title: "JPA) 객체와 테이블 매핑"
 categories: 
-    - jpa
+    - java
 date: 2022-09-27
 last_modified_at: 2022-09-28
 # tags:

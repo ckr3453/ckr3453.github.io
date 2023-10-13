@@ -1,7 +1,7 @@
 ---
-title: "객체지향 쿼리 언어 - 페이징(Paging)"
+title: "JPA) 객체지향 쿼리 언어 - 페이징(Paging)"
 categories: 
-    - jpa
+    - java
 date: 2023-01-20
 last_modified_at: 2023-01-20
 toc: true

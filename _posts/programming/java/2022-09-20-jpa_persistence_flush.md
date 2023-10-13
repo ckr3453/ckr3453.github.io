@@ -1,7 +1,7 @@
 ---
-title: "JPA 내부구조 - 플러시(Flush)"
+title: "JPA) 내부구조 - 플러시(Flush)"
 categories: 
-    - jpa
+    - java
 date: 2022-09-20
 last_modified_at: 2022-09-20
 # tags:
