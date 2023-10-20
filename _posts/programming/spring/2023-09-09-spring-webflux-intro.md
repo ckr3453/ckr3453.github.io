@@ -2,8 +2,8 @@
 title: "Spring Webflux) 개요"
 categories: 
     - spring
-date: 2023-09-11
-last_modified_at: 2023-09-11
+date: 2023-09-09
+last_modified_at: 2023-09-09
 toc: true
 toc_sticky: true
 excerpt: "Spring webflux에 대해 간단히 알아본다."
