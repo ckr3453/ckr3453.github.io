@@ -11,7 +11,7 @@ excerpt: "Reactive Streams"
 
 ## Reactive streams
 
-<center><img src="https://github.com/ckr3453/ckr3453.github.io/assets/36228833/4ac92c11-996a-447d-9063-e1f9d62fae6e"></center>
+<center><img src="https://github.com/ckr3453/ckr3453.github.io/assets/36228833/4ac92c11-996a-447d-9063-e1f9d62fae6e"></center><br/>
 
 Reactive하게 개발하는 쉬운 방법중 하나는 Reactive streams를 활용하는 방법이다. 
 
