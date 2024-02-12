@@ -6,7 +6,7 @@ date: 2024-02-13
 last_modified_at: 2024-02-13
 toc: true
 toc_sticky: true
-excerpt: "R2DBC에 대해 알아보자"
+# excerpt: "R2DBC에 대해 알아보자"
 ---
 
 ## R2DBC
