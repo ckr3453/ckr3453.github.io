@@ -1,7 +1,7 @@
 ---
 title: "JWT(Json Web Token)"
 categories: 
-    - other
+    - etc
 date: 2023-01-15
 last_modified_at: 2023-01-30
 toc: true
