@@ -61,13 +61,6 @@
             </ul>
             <ul>
                 {% for category in site.categories %}
-                    {% if category[0] == "other" %}
-                        <li><a href="/categories/other" class="">other ({{category[1].size}})</a></li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-            <ul>
-                {% for category in site.categories %}
                     {% if category[0] == "book" %}
                         <li><a href="/categories/book" class="">Book review ({{category[1].size}})</a></li>
                     {% endif %}
@@ -78,18 +71,25 @@
       <li>
         <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
           <span class="nav__sub-title">etc</span>
-              <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
-              <ul>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
                   {% for category in site.categories %}
                       {% if category[0] == "conference" %}
                           <li><a href="/categories/conference" class="">Conference/Seminar ({{category[1].size}})</a></li>
                       {% endif %}
                   {% endfor %}
-              </ul>
-              <ul>
+            </ul>
+            <ul>
                 {% for category in site.categories %}
                     {% if category[0] == "motivation" %}
                         <li><a href="/categories/motivation" class="">Motivation ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for category in site.categories %}
+                    {% if category[0] == "etc" %}
+                        <li><a href="/categories/etc" class="">etc ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
