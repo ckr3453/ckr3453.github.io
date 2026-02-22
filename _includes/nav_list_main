@@ -95,6 +95,13 @@
             </ul>
             <ul>
                 {% for category in site.categories %}
+                    {% if category[0] == "retrospective" %}
+                        <li><a href="/categories/retrospective" class="">Retrospective ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for category in site.categories %}
                     {% if category[0] == "etc" %}
                         <li><a href="/categories/etc" class="">etc ({{category[1].size}})</a></li>
                     {% endif %}
