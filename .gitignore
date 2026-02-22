@@ -10,7 +10,8 @@ package.json
 /node_modules/
 
 
-### Atom ###
+### IDE ###
+.idea/
 .ftpconfig
 .sftpconfig
 
